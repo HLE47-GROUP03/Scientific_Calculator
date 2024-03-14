@@ -19,9 +19,7 @@ class SciCalc():
     def opSelect(self):     # για τις βασικές πράξεις και το '='
         if self.operation=='addition':
             self.total += float(display.get())
-        
-        
-        elif self.operation==None:
+        elif self.operation=='':
             self.total=float(display.get())    
 
     def equal(self):
@@ -29,7 +27,7 @@ class SciCalc():
         display.delete(0, 'end')
         display.insert(0,self.total)
         self.result=True
-        self.operation=None
+        self.operation=''
         self.total=0  
 
     def addition(self):
