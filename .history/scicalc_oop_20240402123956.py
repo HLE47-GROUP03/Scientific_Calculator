@@ -208,8 +208,8 @@ def switch():
         # TODO: add DEG caclulation function
         is_deg = True 
 
-rad = tk.PhotoImage(file = "Rad.png")
-deg = tk.PhotoImage(file = "Deg.png")
+rad = tk.PhotoImage(file = "C:/Users/melko/OneDrive/Documents/GitHub/Scientific_Calculator/Rad80.png")
+deg = tk.PhotoImage(file = "C:/Users/melko/OneDrive/Documents/GitHub/Scientific_Calculator/Deg80.png")
 
 switch_button=tk.Button(frame, width=10, height=45, image=deg, command=switch)
 switch_button.grid(row=1, column=0, columnspan=2)
@@ -248,7 +248,6 @@ for i in range(len(tags_func)):
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
 
-# Keybindings
 root.bind('0', calc.num_0)
 root.bind('1', calc.num_1)
 root.bind('2', calc.num_2)
@@ -262,7 +261,7 @@ root.bind('9', calc.num_9)
 root.bind('.', calc.comma)
 root.bind('=', calc.equal)
 root.bind('<Return>', calc.equal)
-root.bind('+', calc.addition)
+root.bind('+', calc.ad)
 
 
 root.mainloop()

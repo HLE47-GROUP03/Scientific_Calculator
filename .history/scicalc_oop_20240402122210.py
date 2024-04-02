@@ -17,11 +17,12 @@ is_deg=True
 
 class SciCalc():
     def __init__(self):
-        self.operation=None                                         # επιλογή για βασικές πράξεις
-        self.total=0                                                # Βοηθητική μεταβλητή υπολογισμού
-        self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
+        self.operation=None   # επιλογή για βασικές πράξεις
+        self.total=0
+        # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να δ
+        self.result=False
 
-    def opSelect(self):                                             # για τις βασικές πράξεις (+, -, *, /)  και το '='
+    def opSelect(self):     # για τις βασικές πράξεις και το '='
         if self.operation=='addition':
             if '.' in display.get():
                 self.total += float(display.get())
@@ -35,15 +36,15 @@ class SciCalc():
             else:
                 self.total=int(display.get())    
 
-    def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
-        self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
-        display.delete(0, 'end')                                    # Διαγραφή οθόνης
-        display.insert(0,self.total)                                # Εμφάνιση αποτελέσματος
-        self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
-        self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
-        self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
+    def equal(self):
+        self.opSelect()
+        display.delete(0, 'end')
+        display.insert(0,self.total)
+        self.result=True
+        self.operation=None
+        self.total=0  
 
-    def addition(self,*args):
+    def addition(self):
         self.operation='addition'
         self.opSelect()
         display.delete(0, 'end')
@@ -208,8 +209,8 @@ def switch():
         # TODO: add DEG caclulation function
         is_deg = True 
 
-rad = tk.PhotoImage(file = "Rad.png")
-deg = tk.PhotoImage(file = "Deg.png")
+rad = tk.PhotoImage(file = "C:/Users/melko/OneDrive/Documents/GitHub/Scientific_Calculator/Rad80.png")
+deg = tk.PhotoImage(file = "C:/Users/melko/OneDrive/Documents/GitHub/Scientific_Calculator/Deg80.png")
 
 switch_button=tk.Button(frame, width=10, height=45, image=deg, command=switch)
 switch_button.grid(row=1, column=0, columnspan=2)
@@ -248,7 +249,6 @@ for i in range(len(tags_func)):
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
 
-# Keybindings
 root.bind('0', calc.num_0)
 root.bind('1', calc.num_1)
 root.bind('2', calc.num_2)
@@ -260,9 +260,6 @@ root.bind('7', calc.num_7)
 root.bind('8', calc.num_8)
 root.bind('9', calc.num_9)
 root.bind('.', calc.comma)
-root.bind('=', calc.equal)
-root.bind('<Return>', calc.equal)
-root.bind('+', calc.addition)
 
 
 root.mainloop()

@@ -208,8 +208,8 @@ def switch():
         # TODO: add DEG caclulation function
         is_deg = True 
 
-rad = tk.PhotoImage(file = "Rad.png")
-deg = tk.PhotoImage(file = "Deg.png")
+rad = tk.PhotoImage(file = "Rad80.png")
+deg = tk.PhotoImage(file = "Deg80.png")
 
 switch_button=tk.Button(frame, width=10, height=45, image=deg, command=switch)
 switch_button.grid(row=1, column=0, columnspan=2)

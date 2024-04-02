@@ -1,6 +1,16 @@
 import tkinter as tk
 import math
-from idlelib.tooltip import Hovertip
+
+def switch():
+    global is_deg
+
+    if is_deg:
+        switch_button.config(image = rad)
+        is_deg = False
+    else:
+        switch_button.config(image = deg)
+        is_deg = True
+ 
 
 root=tk.Tk()
 root.title('Scientific Calculator')
@@ -10,18 +20,15 @@ root.resizable(False, False)
 frame=tk.Frame(root)
 frame.grid()
 
-# μεταβλητή για τον καθορισμό υπολογισμού μοιρών ή ακτινίων για τις τριγωνομετρικές συναρτήσεις
-# απο default, ξεκινάει με μοίρες
-
-is_deg=True                 
+is_deg=True                 # απο default, ξεκινάει με μοίρες
 
 class SciCalc():
     def __init__(self):
-        self.operation=None                                         # επιλογή για βασικές πράξεις
-        self.total=0                                                # Βοηθητική μεταβλητή υπολογισμού
-        self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
+        self.operation=None   # επιλογή για βασικές πράξεις
+        self.total=0
+        self.result=False   # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο
 
-    def opSelect(self):                                             # για τις βασικές πράξεις (+, -, *, /)  και το '='
+    def opSelect(self):     # για τις βασικές πράξεις και το '='
         if self.operation=='addition':
             if '.' in display.get():
                 self.total += float(display.get())
@@ -35,15 +42,15 @@ class SciCalc():
             else:
                 self.total=int(display.get())    
 
-    def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
-        self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
-        display.delete(0, 'end')                                    # Διαγραφή οθόνης
-        display.insert(0,self.total)                                # Εμφάνιση αποτελέσματος
-        self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
-        self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
-        self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
+    def equal(self):
+        self.opSelect()
+        display.delete(0, 'end')
+        display.insert(0,self.total)
+        self.result=True
+        self.operation=None
+        self.total=0  
 
-    def addition(self,*args):
+    def addition(self):
         self.operation='addition'
         self.opSelect()
         display.delete(0, 'end')
@@ -163,11 +170,11 @@ display.insert(0, "0")
 
 
 
-tags_func=[ 'π','e','M+'       ,'MR'       ,'MC' ,
-            'x^y', 'x^2' ,'sin'      ,'cos'      ,'tan',
-            'log','ln' ,'arc\nsin' ,'arc\ncos' ,'arc\ntan',
+tags_func=[ 'rad','deg','M+'       ,'MR'       ,'MC' ,
+            'x^y', 'e' ,'sin'      ,'cos'      ,'tan',
+            'log','ln' ,'arc/nsin' ,'arc/ncos' ,'arc/ntan',
             '1/x','n!' ,'sinh'     ,'cosh'     ,'tanh',    
-            'n√x','2√x','arc\nsinh','arc\ncosh','arc\ntanh'
+            'n√x','2√x','arc/nsinh','arc/ncosh','arc/ntanh'
                ]
 
 functions_1=['', '', '', '', '',
@@ -176,14 +183,6 @@ functions_1=['', '', '', '', '',
             '', '', '', '', '',
             '', calc.square_root, '', '', ''
 ]
-
-hover_message=['Ο αριθμός π', 'Η σταθερά Όιλερ', 'Προσθήκη αριθμού στην μνήμη', 'Ανάκτηση αριθμού από την μνήμη', 'Καθαρισμός μνήμης',
-               'Ύψωση σε δύναμη', 'Ύψωση στο τετράγωνο','Ημίτονο', 'Συνημίτονο', 'Εφαπτομένη',
-               'Λογάριθμος', 'Φυσικός λογάριθμος', 'Αντίστροφο ημίτονο', 'Αντίστροφο συνημίτονο', 'Αντίστροφη εφαπτομένη',
-               'Αντίστροφος', 'Παραγοντικό', 'Υπερβολικό ημίτονο', 'Υπερβολικό συνημίτονο', 'Υπερβολική εφαπτομένη',
-               'n-οστή ρίζα του x', 'Τετραγωνική ρίζα του x', 'Αντίστροφο υπερβολικό\nημίτονο',
-               'Αντίστροφο υπερβολικό\nσυνημίτονο', 'Αντίστροφη υπερβολική\nεφαπτομένη']
-
 
 tags_simple=['7', '8', '9', 'C', 'AC',
              '4', '5', '6', 'x', '÷',
@@ -196,59 +195,44 @@ functions_2=[   calc.num_7, calc.num_8, calc.num_9, '', calc.all_clear,
                 calc.num_1, calc.num_2, calc.num_3, calc.addition, '',
                 calc.num_0, calc.comma, '', calc.equal]
 
-def switch():
-    global is_deg
+rad = PhotoImage(file = "C:/Users/melko/OneDrive/Documents/GitHub/Scientific_Calculator")
+switch_button=tk.Button(frame, width=4, height=2, image=image_rad)
 
-    if is_deg:
-        switch_button.config(image = rad)
-        # TODO: add RAD calculation function
-        is_deg = False
-    else:
-        switch_button.config(image = deg)
-        # TODO: add DEG caclulation function
-        is_deg = True 
 
-rad = tk.PhotoImage(file = "Rad.png")
-deg = tk.PhotoImage(file = "Deg.png")
-
-switch_button=tk.Button(frame, width=10, height=45, image=deg, command=switch)
-switch_button.grid(row=1, column=0, columnspan=2)
+# Define Our Images
+on = PhotoImage(file = "on.png")
+off = PhotoImage(file = "off.png")
 
 i=0
 button_list=[]
-for ro in range(2,7):
+for ro in range(1,6):
     for col in range(0,5):
         if tags_func[i]=='M+' or tags_func[i]=='MC' or tags_func[i]=='MR':
             button_list.append(tk.Button(frame, width=4, height=2, bg='grey', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i]))
-            button_list[i].grid(row=ro, column=col, pady=5, padx=2)    
+            button_list[i].grid(row=ro, column=col, pady=5)    
         else:
             button_list.append(tk.Button(frame, width=4, height=2, bg='black', fg='white', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i], command=functions_1[i]))
-            button_list[i].grid(row=ro, column=col, pady=5,padx=2)
+            button_list[i].grid(row=ro, column=col, pady=5)
         i+=1
 
 i=0
-for ro in range(7,11):
+for ro in range(6,10):
     for col in range(0,5):
         if tags_simple[i]=='C' or tags_simple[i]=='AC':
             button_list.append(tk.Button(frame, width=5, height=2, bg='red', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
-            button_list[i+25].grid(row=ro, column=col, pady=5, padx=2)
+            button_list[i+25].grid(row=ro, column=col, pady=5)
         elif tags_simple[i]=='=':
             button_list.append(tk.Button(frame, width=5, height=2, bg='lightblue', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
-            button_list[i+25].grid(row=ro, column=col, columnspan=2, pady=5, padx=2, sticky="EW")
+            button_list[i+25].grid(row=ro, column=col, columnspan=2, pady=5, sticky="EW")
             break
         else:
             button_list.append(tk.Button(frame, width=5, height=2, bg='lightgrey', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
-            button_list[i+25].grid(row=ro, column=col, pady=5, padx=2)
+            button_list[i+25].grid(row=ro, column=col, pady=5)
         i+=1
-
-Hovertip(switch_button, "Εναλλαγή υπολογισμού μοιρών/ ακτινίων", hover_delay=500)
-for i in range(len(tags_func)):
-    Hovertip(button_list[i], hover_message[i], hover_delay = 500 )
 
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
 
-# Keybindings
 root.bind('0', calc.num_0)
 root.bind('1', calc.num_1)
 root.bind('2', calc.num_2)
@@ -260,9 +244,6 @@ root.bind('7', calc.num_7)
 root.bind('8', calc.num_8)
 root.bind('9', calc.num_9)
 root.bind('.', calc.comma)
-root.bind('=', calc.equal)
-root.bind('<Return>', calc.equal)
-root.bind('+', calc.addition)
 
 
 root.mainloop()
