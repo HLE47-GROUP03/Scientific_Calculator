@@ -12,7 +12,6 @@ frame.grid()
 
 # μεταβλητή για τον καθορισμό υπολογισμού μοιρών ή ακτινίων για τις τριγωνομετρικές συναρτήσεις
 # απο default, ξεκινάει με μοίρες
-
 is_deg=True                 
 
 class SciCalc():
@@ -20,20 +19,23 @@ class SciCalc():
         self.operation=None                                         # επιλογή για βασικές πράξεις
         self.total=0                                                # Βοηθητική μεταβλητή υπολογισμού
         self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
-
+    
+    
+    def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
+            if '.' in display.get():
+                return float(display.get())
+            else:
+                return int(display.get())
+        
+    
     def opSelect(self):                                             # για τις βασικές πράξεις (+, -, *, /)  και το '='
         if self.operation=='addition':
-            if '.' in display.get():
-                self.total += float(display.get())
-            else:
-                self.total += int(display.get())
+            self.total += self.floatOrInt()
+            
         
         
         elif self.operation==None:
-            if '.' in display.get():
-                self.total=float(display.get())
-            else:
-                self.total=int(display.get())    
+            self.total = self.floatOrInt()
 
     def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
         self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
@@ -57,9 +59,9 @@ class SciCalc():
         self.total=0
 
     def square_root(self):
-        result = math.sqrt(float(display.get()))
+        answer = math.sqrt(float(display.get()))
         display.delete(0, 'end')
-        display.insert(0,result)
+        display.insert(0,answer)
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
