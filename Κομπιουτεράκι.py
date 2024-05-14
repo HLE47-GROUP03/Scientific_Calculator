@@ -149,7 +149,7 @@ class SciCalc():
             display.insert('end', '00')
         else:
             display.insert('end','00')
-        self.result=False    
+        self.result=False
 
     def comma(self,*args):
         txt=display.get()
@@ -225,12 +225,11 @@ def switch():
         # TODO: add DEG caclulation function
         is_deg = True 
 
-rad = tk.PhotoImage(file = r'C:\Users\User\Desktop\Rad.png')
+rad = tk.PhotoImage(file = "Rad.png")
 deg = tk.PhotoImage(file = "Deg.png")
 
 switch_button=tk.Button(frame, width=2, height=40, image=deg, cursor="exchange", command=switch)
 switch_button.grid(row=1, column=0, columnspan=2, pady=5, padx=2, sticky="NSEW")
-
 
 i=0
 button_list=[]
@@ -271,8 +270,6 @@ for ro in range(8,13):
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
         i+=1
 
-
-    
 Hovertip(switch_button, "Κλίκ για εναλλαγή υπολογισμού\n            μοιρών/ ακτινίων", hover_delay=100)
 
 for i in range(len(tags_func)):
