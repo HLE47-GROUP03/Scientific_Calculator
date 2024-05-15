@@ -275,9 +275,13 @@ class SciCalc():
         self.result=False
 
     def sign(self, *args):
+        if self.result==True:
+            display.delete(0, 'end')
+            display.insert('end','-')
         if '-' in display.get():
             number=display.get()
             number=number[1:]
+            print(number)
             display.delete(0, 'end')
             display.insert('end',number)
         else:

@@ -21,18 +21,16 @@ class SciCalc():
         self.operation=None                                         # επιλογή για βασικές πράξεις
         self.total=0                                                # Βοηθητική μεταβλητή υπολογισμού
         self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
-        self.haveOperant=False                                      # λογική μεταβλητή για τον έλεγχο ύπαρξης πρώτου τελεστέου για συναρτήσεις που απαιτούν δύο (πχ, ν-οστή ρίζα, ν-οστή δύναμη κτλ)
-        self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
     
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if '.' in display.get():
-            return float(display.get())
-        else:
-            return int(display.get())
+            if '.' in display.get():
+                return float(display.get())
+            else:
+                return int(display.get())
         
     
-    def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
+    def opSelect(self):                                             # για τις βασικές πράξεις (+, -, *, /)  και το '='
         if self.operation=='addition':
             self.total += self.floatOrInt()
 
@@ -52,50 +50,28 @@ class SciCalc():
             if self.result==True or (self.total==0 and self.result==False):
                 self.total = self.floatOrInt()
             else:
-                if self.floatOrInt()!=0:                            # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
+                if self.floatOrInt():
                     self.total /= self.floatOrInt()
-                else:                                               # Διαφορετικά εμφάνιση σφάλματος
+                else:
                     self.total = 'Math ERROR'
         elif self.operation==None:
             self.total = self.floatOrInt()
-        
-
-    def secOpSelect(self):
-        if self.secOperation=='nRoot':
-            if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
-                self.degree=self.floatOrInt()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
-                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
-                self.result=True
-            else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
-                self.radicand=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
-                self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
-                display.delete(0, 'end')
-                display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
-                self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=True
-                self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης        
-
-
-
-
-
-
 
     def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
-        if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
-            self.secOpSelect()
         self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
-        try:
-            if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
-                display.insert(0,int(self.total))                   
-            else:
-                display.insert(0,self.total)
-        except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
+        if (self.total%1)==0:                                       # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
+            display.insert(0,int(self.total))
+            print('case 1')
+        else:
             display.insert(0,self.total)                            # Εμφάνιση αποτελέσματος
+            print('else')
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
+        print(self.total)
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
+        print('equal called')
+
 
     def addition(self,*args):
         self.operation='addition'
@@ -130,7 +106,8 @@ class SciCalc():
             self.equal()
             number=self.floatOrInt()
             display.delete(0, 'end')
-            display.insert(0,number*100)     
+            display.insert(0,number*100)
+            display.insert('end', '%')         
         else:
             number=self.floatOrInt()
             display.delete(0, 'end')
@@ -139,9 +116,17 @@ class SciCalc():
     
     def roundFunc(self, *args):
         number=display.get()
-        number=round(float(number))
-        display.delete(0, 'end')
-        display.insert(0, number)
+        if number.isnumeric()==False:
+            sign=number[-1]
+            number=number[0:-1]
+            number=round(float(number))
+            display.delete(0, 'end')
+            display.insert(0, number)
+            display.insert('end', sign)
+        else:
+            number=round(float(number))
+            display.delete(0, 'end')
+            display.insert(0, number)
         self.result=True
 
     def clear(self):
@@ -150,15 +135,8 @@ class SciCalc():
         self.result=True
 
     def backspace(self,*args):
-        if display.get()=='0':
-            self.result=True
-        elif len(display.get())==1:
-            display.delete(0, 'end')
-            display.insert('end', '0')
-            self.result=True
-        else:
-            display.delete(display.index("end") - 1)
-            self.result=False
+        display.delete(display.index("end") - 1)
+        self.result=False
 
     def all_clear(self):
         display.delete(0, 'end')
@@ -275,11 +253,11 @@ class SciCalc():
         self.result=False
 
     def sign(self, *args):
-        if '-' in display.get():
-            number=display.get()
-            number=number[1:]
+        if self.result==True:
             display.delete(0, 'end')
-            display.insert('end',number)
+            display.insert('end','-')
+        elif '-' in display.get():
+            display.delete(0,1)
         else:
             display.insert(0, '-')
         self.result=False
@@ -287,16 +265,7 @@ class SciCalc():
     def piKey(self):
         display.delete(0, 'end')
         display.insert('end','3.14159265')
-        self.result=False
-
-    def napierConstant(self):
-        display.delete(0, 'end')
-        display.insert('end','2.71828182')
-        self.result=False
-
-    def nRoot(self, *args):
-        self.secOperation='nRoot'
-        self.secOpSelect()
+        print(self.total)
 
 
 calc=SciCalc()
@@ -320,15 +289,15 @@ tags_func=[ 'M-', 'MS', 'GT',
             ]
 
 functions_1=['', '', '',
-             calc.piKey, calc.napierConstant, '', '', '',
+             calc.piKey, '', '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
-             calc.nRoot, calc.square_root, '', '', '',
+             '', calc.square_root, '', '', '',
                     
 ]
 
-hover_message=['Αφαίρεση αριθμού από την μνήμη','Προσθήκη αριθμού στην μνήμη','Άθροισμα αποτελεσμάτων','Ο αριθμός π', 'Η σταθερά του Νέιπιερ\n(αριθμός Όιλερ)', 'Πρόσθεσε τον αριθμό στην μνήμη', 'Ανάκτηση αριθμού από την μνήμη', 'Καθαρισμός μνήμης',
+hover_message=['Αφαίρεση αριθμού από την μνήμη','Προσθήκη αριθμού στην μνήμη','Άθροισμα αποτελεσμάτων','Ο αριθμός π', 'Η σταθερά Όιλερ', 'Πρόσθεσε τον αριθμό στην μνήμη', 'Ανάκτηση αριθμού από την μνήμη', 'Καθαρισμός μνήμης',
                'Ύψωση σε δύναμη', 'Ύψωση στο τετράγωνο','Ημίτονο', 'Συνημίτονο', 'Εφαπτομένη',
                'Λογάριθμος', 'Φυσικός λογάριθμος', 'Αντίστροφο ημίτονο', 'Αντίστροφο συνημίτονο', 'Αντίστροφη εφαπτομένη',
                'Αντίστροφος', 'Παραγοντικό', 'Υπερβολικό ημίτονο', 'Υπερβολικό συνημίτονο', 'Υπερβολική εφαπτομένη',
@@ -396,7 +365,7 @@ for ro in range(8,13):
         elif tags_simple[i]=='ROUND':
             button_list.append(tk.Button(frame, width=5, height=2, bg='black', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
-            Hovertip(button_list[i+28], "Στρογγυλοποίηση στον\nκοντινότερο ακέραιο", hover_delay=500)  
+            Hovertip(button_list[i+28], "Στρογγυλοποίηση", hover_delay=500)  
         elif tags_simple[i]=='=':
             button_list.append(tk.Button(frame, width=5, height=2, bg='indianred3', fg='black', activebackground='green', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, columnspan=1, pady=5, padx=2, sticky="NSEW")

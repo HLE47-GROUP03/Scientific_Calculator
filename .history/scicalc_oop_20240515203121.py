@@ -22,7 +22,6 @@ class SciCalc():
         self.total=0                                                # Βοηθητική μεταβλητή υπολογισμού
         self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
         self.haveOperant=False                                      # λογική μεταβλητή για τον έλεγχο ύπαρξης πρώτου τελεστέου για συναρτήσεις που απαιτούν δύο (πχ, ν-οστή ρίζα, ν-οστή δύναμη κτλ)
-        self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
     
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
@@ -32,7 +31,7 @@ class SciCalc():
             return int(display.get())
         
     
-    def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
+    def opSelect(self):                                             # για τις ΄βασικές πράξεις (που απαιτούν την εισαγωγή 2 τελεστέων )και το '='
         if self.operation=='addition':
             self.total += self.floatOrInt()
 
@@ -52,28 +51,24 @@ class SciCalc():
             if self.result==True or (self.total==0 and self.result==False):
                 self.total = self.floatOrInt()
             else:
-                if self.floatOrInt()!=0:                            # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
+                if self.floatOrInt()!=0:
                     self.total /= self.floatOrInt()
-                else:                                               # Διαφορετικά εμφάνιση σφάλματος
+                else:
                     self.total = 'Math ERROR'
-        elif self.operation==None:
-            self.total = self.floatOrInt()
         
 
     def secOpSelect(self):
         if self.secOperation=='nRoot':
-            if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
-                self.degree=self.floatOrInt()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
-                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
-                self.result=True
+            if self.haveOperant==False:                              # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
+                self.degree=self.floatOrInt()
+                self.haveOperant=True
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
-                self.radicand=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
-                self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
+                self.radicand=self.floatOrInt()                     
+                self.secTotal=self.radicand**(1/self.degree)
                 display.delete(0, 'end')
-                display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
-                self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
+                display.insert(0,self.secTotal)
+                self.haveOperant=False
                 self.result=True
-                self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης        
 
 
 
@@ -82,8 +77,6 @@ class SciCalc():
 
 
     def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
-        if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
-            self.secOpSelect()
         self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
         try:
@@ -275,11 +268,11 @@ class SciCalc():
         self.result=False
 
     def sign(self, *args):
-        if '-' in display.get():
-            number=display.get()
-            number=number[1:]
+        if self.result==True:
             display.delete(0, 'end')
-            display.insert('end',number)
+            display.insert('end','-')
+        elif '-' in display.get():
+            display.delete(0,1)
         else:
             display.insert(0, '-')
         self.result=False
