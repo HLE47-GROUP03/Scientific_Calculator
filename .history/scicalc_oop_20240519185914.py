@@ -90,12 +90,13 @@ class SciCalc():
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
     
         elif self.secOperation=='squared':
-            self.base=self.floatOrInt()                         # Αποθήκευση της τιμής οθόνης ως εκθέτη
-            self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
+            self.exponent=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
+            self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
             display.delete(0, 'end')
-            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
             self.result=False
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+            self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
 
 
@@ -349,7 +350,7 @@ tags_func=[ 'M-', 'MS', 'GT',
 
 functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
-             calc.nPower, calc.squared, '', '', '',
+             calc.nPower, '', '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',

@@ -349,7 +349,7 @@ tags_func=[ 'M-', 'MS', 'GT',
 
 functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
-             calc.nPower, calc.squared, '', '', '',
+             calc.nPower, calc.sq, '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',

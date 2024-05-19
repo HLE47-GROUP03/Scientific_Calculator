@@ -23,6 +23,7 @@ class SciCalc():
         self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
         self.haveOperant=False                                      # λογική μεταβλητή για τον έλεγχο ύπαρξης πρώτου τελεστέου για συναρτήσεις που απαιτούν δύο (πχ, ν-οστή ρίζα, ν-οστή δύναμη κτλ)
         self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
+        self.parenthesis=False
     
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
@@ -33,6 +34,7 @@ class SciCalc():
         
     
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
+        if self.parenthesis
         if self.operation=='addition':
             self.total += self.floatOrInt()
 
@@ -61,7 +63,7 @@ class SciCalc():
         
 
     def secOpSelect(self):
-        if self.secOperation=='nRoot':                              # # Υπολογισμός n-οστής ρίζας του Χ
+        if self.secOperation=='nRoot':
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
                 self.degree=self.floatOrInt()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
@@ -72,30 +74,10 @@ class SciCalc():
                 display.delete(0, 'end')
                 display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=False
-                self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
-
-        elif self.secOperation=='nPower':                           # Υπολογισμός Χ στη δύναμη του Υ
-            if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή της βάσης, χρήση του αριθμού που δόθηκε σαν βάση
-                self.base=self.floatOrInt()                         # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βάσης
-                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βάση )
                 self.result=True
-            else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
-                self.exponent=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
-                self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
-                display.delete(0, 'end')
-                display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
-                self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=False
-                self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
-    
-        elif self.secOperation=='squared':
-            self.base=self.floatOrInt()                         # Αποθήκευση της τιμής οθόνης ως εκθέτη
-            self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
-            display.delete(0, 'end')
-            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=False
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+                self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης        
+
+
 
 
 
@@ -318,13 +300,8 @@ class SciCalc():
         self.secOperation='nRoot'
         self.secOpSelect()
 
-    def nPower(self, *args):
-        self.secOperation='nPower'
-        self.secOpSelect()
-
-    def squared(self, *args):
-        self.secOperation='squared'
-        self.secOpSelect()
+    def leftParenthesis(self):
+        self.parenthesis=True    
 
 
 calc=SciCalc()
@@ -349,7 +326,7 @@ tags_func=[ 'M-', 'MS', 'GT',
 
 functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
-             calc.nPower, calc.squared, '', '', '',
+             '', '', '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',

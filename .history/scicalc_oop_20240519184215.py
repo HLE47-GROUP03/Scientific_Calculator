@@ -72,7 +72,7 @@ class SciCalc():
                 display.delete(0, 'end')
                 display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=False
+                self.result=True
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='nPower':                           # Υπολογισμός Χ στη δύναμη του Υ
@@ -80,22 +80,17 @@ class SciCalc():
                 self.base=self.floatOrInt()                         # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βάσης
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βάση )
                 self.result=True
-            else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
-                self.exponent=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
-                self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
+            else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
+                self.exponent=self.floatOrInt()
+                self.secTotal=self.base**self.exponent
                 display.delete(0, 'end')
                 display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=False
+                self.result=True
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
     
-        elif self.secOperation=='squared':
-            self.base=self.floatOrInt()                         # Αποθήκευση της τιμής οθόνης ως εκθέτη
-            self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
-            display.delete(0, 'end')
-            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=False
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+
+
 
 
 
@@ -322,11 +317,6 @@ class SciCalc():
         self.secOperation='nPower'
         self.secOpSelect()
 
-    def squared(self, *args):
-        self.secOperation='squared'
-        self.secOpSelect()
-
-
 calc=SciCalc()
 
 
@@ -349,7 +339,7 @@ tags_func=[ 'M-', 'MS', 'GT',
 
 functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
-             calc.nPower, calc.squared, '', '', '',
+             '', '', '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',

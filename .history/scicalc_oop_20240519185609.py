@@ -89,13 +89,8 @@ class SciCalc():
                 self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
     
-        elif self.secOperation=='squared':
-            self.base=self.floatOrInt()                         # Αποθήκευση της τιμής οθόνης ως εκθέτη
-            self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
-            display.delete(0, 'end')
-            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=False
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+
+
 
 
 
@@ -322,11 +317,6 @@ class SciCalc():
         self.secOperation='nPower'
         self.secOpSelect()
 
-    def squared(self, *args):
-        self.secOperation='squared'
-        self.secOpSelect()
-
-
 calc=SciCalc()
 
 
@@ -349,7 +339,7 @@ tags_func=[ 'M-', 'MS', 'GT',
 
 functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
-             calc.nPower, calc.squared, '', '', '',
+             calc.nPower, '', '', '', '',
              '', '', '', '', '',
              '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',
