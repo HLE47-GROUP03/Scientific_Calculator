@@ -127,11 +127,11 @@ class SciCalc():
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
         try:
             if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
-                self.printNumber(int(self.total))                   
+                display.insert(0,int(self.total))                   
             else:
-                self.printNumber(self.total)
+                display.insert(0,self.total)
         except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
-            self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
+            display.insert(0,self.total)                            # Εμφάνιση αποτελέσματος
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής

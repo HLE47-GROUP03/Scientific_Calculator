@@ -31,6 +31,8 @@ class SciCalc():
             text=format(text, '.10e')
             if len(text) > 20:
                 text='ERROR'
+            else:
+                text=format(text, '.10e')
         else:
             text=number
         display.delete(0, 'end')
@@ -82,7 +84,8 @@ class SciCalc():
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
-                self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
+                display.delete(0, 'end')
+                display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
@@ -103,7 +106,8 @@ class SciCalc():
         elif self.secOperation=='squared':
             self.base=self.floatOrInt()                             # Αποθήκευση της τιμής οθόνης ως εκθέτη
             self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            display.delete(0, 'end')
+            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
@@ -112,7 +116,7 @@ class SciCalc():
             if is_deg:
                 self.angle=math.radians(self.angle)
             self.secTotal=math.sin(self.angle)
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.print(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -127,11 +131,11 @@ class SciCalc():
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
         try:
             if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
-                self.printNumber(int(self.total))                   
+                display.insert(0,int(self.total))                   
             else:
-                self.printNumber(self.total)
+                display.insert(0,self.total)
         except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
-            self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
+            display.insert(0,self.total)                            # Εμφάνιση αποτελέσματος
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
@@ -164,10 +168,12 @@ class SciCalc():
         if self.operation:
             self.equal()
             number=self.floatOrInt()
-            self.printNumber(number*100)     
+            display.delete(0, 'end')
+            display.insert(0,number*100)     
         else:
             number=self.floatOrInt()
-            self.printNumber(number/100)
+            display.delete(0, 'end')
+            display.insert(0,number/100)
         self.result=True
     
     def roundFunc(self, *args):

@@ -27,23 +27,19 @@ class SciCalc():
 
     def printNumber(self, number, *args):
         if len(str(number))>20:
-            text=decimal.Decimal(number)
-            text=format(text, '.10e')
-            if len(text) > 20:
-                text='ERROR'
-        else:
-            text=number
-        display.delete(0, 'end')
-        display.insert(0,text)
+            text = decimal.Decimal(number)
+            format(text, '.10e')
+        
+
+
+    
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        try:
-            if '.' in display.get():
-                return float(display.get())
-            else:
-                return int(display.get())
-        except:
-            return display.get()
+        if '.' in display.get():
+            return float(display.get())
+        else:
+            return int(display.get())
+        
     
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
         if self.operation=='addition':
@@ -82,7 +78,8 @@ class SciCalc():
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
-                self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
+                display.delete(0, 'end')
+                display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
@@ -95,7 +92,8 @@ class SciCalc():
             else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
                 self.exponent=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
                 self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
-                self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
+                display.delete(0, 'end')
+                display.insert(0,self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
@@ -103,7 +101,8 @@ class SciCalc():
         elif self.secOperation=='squared':
             self.base=self.floatOrInt()                             # Αποθήκευση της τιμής οθόνης ως εκθέτη
             self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            display.delete(0, 'end')
+            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
@@ -112,7 +111,8 @@ class SciCalc():
             if is_deg:
                 self.angle=math.radians(self.angle)
             self.secTotal=math.sin(self.angle)
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            display.delete(0, 'end')
+            display.insert(0,self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -127,11 +127,11 @@ class SciCalc():
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
         try:
             if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
-                self.printNumber(int(self.total))                   
+                display.insert(0,int(self.total))                   
             else:
-                self.printNumber(self.total)
+                display.insert(0,self.total)
         except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
-            self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
+            display.insert(0,self.total)                            # Εμφάνιση αποτελέσματος
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
@@ -139,41 +139,48 @@ class SciCalc():
     def addition(self,*args):
         self.operation='addition'
         self.opSelect()
-        self.printNumber(self.total)
+        display.delete(0, 'end')
+        display.insert(0,self.total)
         self.result=True
     
     def subtraction(self, *args):
         self.operation='subtraction'
         self.opSelect()
-        self.printNumber(self.total)
+        display.delete(0, 'end')
+        display.insert(0,self.total)
         self.result=True
 
     def multiplication(self, *args):
         self.operation='multiplication'
         self.opSelect()
-        self.printNumber(self.total)
+        display.delete(0, 'end')
+        display.insert(0,self.total)
         self.result=True
 
     def division(self, *args):
         self.operation='division'
         self.opSelect()
-        self.printNumber(self.total)
+        display.delete(0, 'end')
+        display.insert(0,self.total)
         self.result=True
     
     def percent(self, *args):
         if self.operation:
             self.equal()
             number=self.floatOrInt()
-            self.printNumber(number*100)     
+            display.delete(0, 'end')
+            display.insert(0,number*100)     
         else:
             number=self.floatOrInt()
-            self.printNumber(number/100)
+            display.delete(0, 'end')
+            display.insert(0,number/100)
         self.result=True
     
     def roundFunc(self, *args):
         number=display.get()
         number=round(float(number))
-        self.printNumber( number)
+        display.delete(0, 'end')
+        display.insert(0, number)
         self.result=True
 
     def clear(self):
@@ -200,7 +207,8 @@ class SciCalc():
 
     def square_root(self):
         answer = math.sqrt(float(display.get()))
-        self.printNumber(answer)
+        display.delete(0, 'end')
+        display.insert(0,answer)
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
@@ -316,7 +324,8 @@ class SciCalc():
         self.result=False
 
     def piKey(self):
-        self.printNumber(math.pi)
+        display.delete(0, 'end')
+        display.insert('end',math.pi)
         self.result=False
 
     def napierConstant(self):
