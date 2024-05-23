@@ -25,8 +25,7 @@ class SciCalc():
         self.haveOperant=False                                      # λογική μεταβλητή για τον έλεγχο ύπαρξης πρώτου τελεστέου για συναρτήσεις που απαιτούν δύο (πχ, ν-οστή ρίζα, ν-οστή δύναμη κτλ)
         self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
         self.memory=0                                               # για τους αριθμούς που αποθηκεύονται στη μνήμη
-        self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
-        self.GTsaved=False
+        self.grandTotal=0                                           # για τη λειτουργία αποθήκευσης γενικού συνόλου
 
     def printNumber(self, number, *args):
         if len(str(number))>20:
@@ -267,7 +266,6 @@ class SciCalc():
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
-        self.GTsaved=False
 
     def addition(self,*args):
         self.opSelect()
@@ -552,12 +550,7 @@ class SciCalc():
         self.memory=self.floatOrInt()
 
     def grandTotal(self, *args):
-        if self.GTsaved==False:
-            self.grTotal+=self.floatOrInt()
-            self.GTsaved=True
-        else:            
-            self.printNumber(self.grTotal)
-            self.result=True
+        if 
 
     
 
@@ -581,8 +574,8 @@ tags_func=[ 'M-', 'MS', 'GT',
     
             ]
 
-functions_1=[calc.memMinus, calc.memSet, calc.grandTotal,
-             calc.piKey, calc.napierConstant, calc.memPlus, calc.memRecall, calc.memClear,
+functions_1=['', '', '',
+             calc.piKey, calc.napierConstant, '', '', '',
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
              calc.inverse, calc.factorial, calc.sinh, calc.cosh, calc.tanh,
@@ -630,13 +623,13 @@ i=0
 button_list=[]
 for col in range(2,5):
     if tags_func[i]=='M-' or tags_func[i]=='MS' or tags_func[i]=='GT':
-        button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i], command=functions_1[i]))
+        button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i]))
         button_list[i].grid(row=1, column=col, pady=5, padx=2, sticky="NSEW")
     i+=1
 for ro in range(2,7):
     for col in range(0,5):
         if tags_func[i]=='M+' or tags_func[i]=='MC' or tags_func[i]=='MR':
-            button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i],command=functions_1[i]))
+            button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i]))
             button_list[i].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
         else:
             button_list.append(tk.Button(frame, width=4, height=2, bg='black', fg='white', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i], command=functions_1[i]))

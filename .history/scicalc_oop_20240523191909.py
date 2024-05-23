@@ -267,7 +267,6 @@ class SciCalc():
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
-        self.GTsaved=False
 
     def addition(self,*args):
         self.opSelect()
@@ -553,9 +552,12 @@ class SciCalc():
 
     def grandTotal(self, *args):
         if self.GTsaved==False:
+            print(self.grTotal)
             self.grTotal+=self.floatOrInt()
+            print(self.grTotal)
             self.GTsaved=True
-        else:            
+        else:
+            print(self.grTotal)            
             self.printNumber(self.grTotal)
             self.result=True
 

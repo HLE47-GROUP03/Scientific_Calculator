@@ -24,9 +24,6 @@ class SciCalc():
         self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
         self.haveOperant=False                                      # λογική μεταβλητή για τον έλεγχο ύπαρξης πρώτου τελεστέου για συναρτήσεις που απαιτούν δύο (πχ, ν-οστή ρίζα, ν-οστή δύναμη κτλ)
         self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
-        self.memory=0                                               # για τους αριθμούς που αποθηκεύονται στη μνήμη
-        self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
-        self.GTsaved=False
 
     def printNumber(self, number, *args):
         if len(str(number))>20:
@@ -211,41 +208,41 @@ class SciCalc():
             self.result=True
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
-        elif self.secOperation=='tanh':
+        elif self.secOperation=='tan':
             self.angle=self.floatOrInt()
             if is_deg:
                 self.angle=math.radians(self.angle)
-            self.secTotal=math.tanh(self.angle)
+            self.secTotal=math.tan(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.result=True
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
-        elif self.secOperation=='arcSinh':
-            self.secTotal=math.asinh(self.floatOrInt())
+        elif self.secOperation=='arcSin':
+            try:
+                self.secTotal=math.asin(self.floatOrInt())
+                if is_deg:                                          # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
+                    self.secTotal=math.degrees(self.secTotal)       # Μετατροπή απο ακτίνια σε μοίρες (η math.asin επιστρέφει αποτέλεσμα σε ακτίνια)
+            except:
+                self.secTotal='ERROR'                               # Εξαίρεση σφάλματος για την περίπτωση που το δεδομένο δεν είναι ανάμεσα στο -1 και το 1 (προϋπόθεση της math.asin())
+            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.result=True
+            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+
+        elif self.secOperation=='arcCos':
+            try:
+                self.secTotal=math.acos(self.floatOrInt())
+                if is_deg:                                          # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
+                    self.secTotal=math.degrees(self.secTotal)       # Μετατροπή απο ακτίνια σε μοίρες (η math.acos επιστρέφει αποτέλεσμα σε ακτίνια)
+            except:
+                self.secTotal='ERROR'                               # Εξαίρεση σφάλματος για την περίπτωση που το δεδομένο δεν είναι ανάμεσα στο -1 και το 1 (προϋπόθεση της math.acos())
+            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.result=True
+            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+
+        elif self.secOperation=='arcTan':
+            self.secTotal=math.atan(self.floatOrInt())
             if is_deg:                                              # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
-                self.secTotal=math.degrees(self.secTotal)           # Μετατροπή απο ακτίνια σε μοίρες (η math.asinh επιστρέφει αποτέλεσμα σε ακτίνια)
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
-
-        elif self.secOperation=='arcCosh':
-            try:
-                self.secTotal=math.acosh(self.floatOrInt())
-                if is_deg:                                          # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
-                    self.secTotal=math.degrees(self.secTotal)       # Μετατροπή απο ακτίνια σε μοίρες (η math.acosh επιστρέφει αποτέλεσμα σε ακτίνια)
-            except:
-                self.secTotal='Math ERROR'                          # Εξαίρεση σφάλματος για την περίπτωση που το δεδομένο δεν είναι θετικός (προϋπόθεση της math.acosh())
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
-
-        elif self.secOperation=='arcTanh':
-            try:
-                self.secTotal=math.atanh(self.floatOrInt())
-                if is_deg:                                          # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
-                    self.secTotal=math.degrees(self.secTotal)       # Μετατροπή απο ακτίνια σε μοίρες (η math.atanh επιστρέφει αποτέλεσμα σε ακτίνια)
-            except:
-                self.secTotal='Math ERROR'                          # Εξαίρεση σφάλματος για την περίπτωση που το δεδομένο δεν είναι ανάμεσα στο 0,99 και το -0,99 (προϋπόθεση της math.atanh())
+                self.secTotal=math.degrees(self.secTotal)           # Μετατροπή απο ακτίνια σε μοίρες (η math.atan επιστρέφει αποτέλεσμα σε ακτίνια)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.result=True
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
@@ -267,7 +264,6 @@ class SciCalc():
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
-        self.GTsaved=False
 
     def addition(self,*args):
         self.opSelect()
@@ -450,12 +446,12 @@ class SciCalc():
 
     def piKey(self):
         self.printNumber(math.pi)
-        self.result=True
+        self.result=False
 
     def napierConstant(self):
         display.delete(0, 'end')
         display.insert('end','2.71828182')
-        self.result=True
+        self.result=False
 
     def nRoot(self, *args):
         self.secOperation='nRoot'
@@ -533,34 +529,6 @@ class SciCalc():
         self.secOperation='arcTanh'
         self.secOpSelect()
 
-    def memPlus(self,*args):
-        self.memory+=self.floatOrInt()
-        self.result=True
-
-    def memMinus(self, *args):
-        self.memory-=self.floatOrInt()
-        self.result=True
-
-    def memRecall(self, *args):
-        self.printNumber(self.memory)
-        self.result=False
-
-    def memClear(self, *args):
-        self.memory=0
-
-    def memSet(self, *args):
-        self.memory=self.floatOrInt()
-
-    def grandTotal(self, *args):
-        if self.GTsaved==False:
-            self.grTotal+=self.floatOrInt()
-            self.GTsaved=True
-        else:            
-            self.printNumber(self.grTotal)
-            self.result=True
-
-    
-
 calc=SciCalc()
 
 
@@ -581,12 +549,13 @@ tags_func=[ 'M-', 'MS', 'GT',
     
             ]
 
-functions_1=[calc.memMinus, calc.memSet, calc.grandTotal,
-             calc.piKey, calc.napierConstant, calc.memPlus, calc.memRecall, calc.memClear,
+functions_1=['', '', '',
+             calc.piKey, calc.napierConstant, '', '', '',
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
-             calc.inverse, calc.factorial, calc.sinh, calc.cosh, calc.tanh,
-             calc.nRoot, calc.square_root, calc.arcSinh, calc.arcCosh, calc.arcTanh     
+             calc.inverse, calc.factorial, '', '', '',
+             calc.nRoot, calc.square_root, '', '', '',
+                    
 ]
 
 hover_message=['Αφαίρεση αριθμού από την μνήμη','Προσθήκη αριθμού στην μνήμη','Άθροισμα αποτελεσμάτων','Ο αριθμός π', 'Η σταθερά του Νέιπιερ\n(αριθμός Όιλερ)', 'Πρόσθεσε τον αριθμό στην μνήμη', 'Ανάκτηση αριθμού από την μνήμη', 'Καθαρισμός μνήμης',
@@ -630,13 +599,13 @@ i=0
 button_list=[]
 for col in range(2,5):
     if tags_func[i]=='M-' or tags_func[i]=='MS' or tags_func[i]=='GT':
-        button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i], command=functions_1[i]))
+        button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i]))
         button_list[i].grid(row=1, column=col, pady=5, padx=2, sticky="NSEW")
     i+=1
 for ro in range(2,7):
     for col in range(0,5):
         if tags_func[i]=='M+' or tags_func[i]=='MC' or tags_func[i]=='MR':
-            button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i],command=functions_1[i]))
+            button_list.append(tk.Button(frame, width=4, height=2, bg='light sea green', fg='red', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i]))
             button_list[i].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
         else:
             button_list.append(tk.Button(frame, width=4, height=2, bg='black', fg='white', font=('Helvetica', 10, 'bold'), bd=2, text=tags_func[i], command=functions_1[i]))

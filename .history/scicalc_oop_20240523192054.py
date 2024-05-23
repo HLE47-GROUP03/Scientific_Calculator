@@ -553,7 +553,9 @@ class SciCalc():
 
     def grandTotal(self, *args):
         if self.GTsaved==False:
+            print(self.grTotal)
             self.grTotal+=self.floatOrInt()
+            print(self.grTotal)
             self.GTsaved=True
         else:            
             self.printNumber(self.grTotal)

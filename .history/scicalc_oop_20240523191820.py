@@ -26,7 +26,6 @@ class SciCalc():
         self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
         self.memory=0                                               # για τους αριθμούς που αποθηκεύονται στη μνήμη
         self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
-        self.GTsaved=False
 
     def printNumber(self, number, *args):
         if len(str(number))>20:
@@ -267,7 +266,6 @@ class SciCalc():
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
-        self.GTsaved=False
 
     def addition(self,*args):
         self.opSelect()
@@ -552,10 +550,13 @@ class SciCalc():
         self.memory=self.floatOrInt()
 
     def grandTotal(self, *args):
-        if self.GTsaved==False:
+        if self.result==True:
+            print(self.grTotal)
             self.grTotal+=self.floatOrInt()
-            self.GTsaved=True
-        else:            
+            print(self.grTotal)
+            self.result=False
+        else:
+            print(self.grTotal)            
             self.printNumber(self.grTotal)
             self.result=True
 
