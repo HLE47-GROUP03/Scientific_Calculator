@@ -84,7 +84,7 @@ class SciCalc():
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=True
+                self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='nPower':                           # Υπολογισμός Χ στη δύναμη του Υ
@@ -464,7 +464,7 @@ functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
-             calc.inverse, '', '', '', '',
+             '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',
                     
 ]

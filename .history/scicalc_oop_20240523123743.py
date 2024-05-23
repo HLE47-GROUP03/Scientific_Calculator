@@ -21,7 +21,7 @@ class SciCalc():
     def __init__(self):
         self.operation=None                                         # επιλογή για βασικές πράξεις
         self.total=0                                                # Βοηθητική μεταβλητή υπολογισμού
-        self.result=False                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
+        self.result=True                                           # έλεγχος αν αυτό που εμφανίζεται στην οθόνη είναι αποτέλεσμα ή εισαγωγή απο το πληκτρολόγιο, ώστε να διαγραφεί κατά την επόμενη πληκτρολόγηση από την οθόνη
         self.haveOperant=False                                      # λογική μεταβλητή για τον έλεγχο ύπαρξης πρώτου τελεστέου για συναρτήσεις που απαιτούν δύο (πχ, ν-οστή ρίζα, ν-οστή δύναμη κτλ)
         self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
 
@@ -51,18 +51,22 @@ class SciCalc():
 
         elif self.operation=='subtraction':
             #if self.result==True or (self.total==0 and self.result==False):                # έλεγχος αν υπάρχει ήδη ένας τελεστέος, ΄ώστε να μην αφαιρεθεί ο πρώτος τελεστέος από το '0' που είναι η αρχικοποιημένη τιμή της μεταβλητής self.total
-            #    self.total = self.floatOrInt()
-            #else:
+            print(self.total)
+            print(self.floatOrInt())
             self.total -= self.floatOrInt()
+            print(self.total)
+
 
         elif self.operation=='multiplication':
             #if self.result==True or (self.total==0 and self.result==False):
-            #    self.total = self.floatOrInt()
-            #else:
-            self.total *= self.floatOrInt()
+            if self.total==0:
+                self.total = self.floatOrInt()
+            else:
+                self.total *= self.floatOrInt()
 
         elif self.operation=='division':
-            if self.result==True or (self.total==0 and self.result==False):
+            #if self.result==True or (self.total==0 and self.result==False):
+            if self.total==0:
                 self.total = self.floatOrInt()
             else:
                 if self.floatOrInt()!=0:                            # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
@@ -84,26 +88,27 @@ class SciCalc():
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=True
+                self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='nPower':                           # Υπολογισμός Χ στη δύναμη του Υ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή της βάσης, χρήση του αριθμού που δόθηκε σαν βάση
                 self.base=self.floatOrInt()                         # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βάσης
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βάση )
+                self.result=True
             else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
                 self.exponent=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
                 self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
+                self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
-            self.result=True
-
+    
         elif self.secOperation=='squared':
             self.base=self.floatOrInt()                             # Αποθήκευση της τιμής οθόνης ως εκθέτη
             self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
         elif self.secOperation=='sin':
@@ -112,7 +117,7 @@ class SciCalc():
                 self.angle=math.radians(self.angle)
             self.secTotal=math.sin(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='cos':
@@ -121,7 +126,7 @@ class SciCalc():
                 self.angle=math.radians(self.angle)
             self.secTotal=math.cos(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
         elif self.secOperation=='tan':
@@ -130,7 +135,7 @@ class SciCalc():
                 self.angle=math.radians(self.angle)
             self.secTotal=math.tan(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcSin':
@@ -141,7 +146,7 @@ class SciCalc():
             except:
                 self.secTotal='ERROR'                               # Εξαίρεση σφάλματος για την περίπτωση που το δεδομένο δεν είναι ανάμεσα στο -1 και το 1 (προϋπόθεση της math.asin())
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcCos':
@@ -152,7 +157,7 @@ class SciCalc():
             except:
                 self.secTotal='ERROR'                               # Εξαίρεση σφάλματος για την περίπτωση που το δεδομένο δεν είναι ανάμεσα στο -1 και το 1 (προϋπόθεση της math.acos())
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcTan':
@@ -160,7 +165,7 @@ class SciCalc():
             if is_deg:                                              # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
                 self.secTotal=math.degrees(self.secTotal)           # Μετατροπή απο ακτίνια σε μοίρες (η math.atan επιστρέφει αποτέλεσμα σε ακτίνια)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='log':
@@ -172,14 +177,10 @@ class SciCalc():
         elif self.secOperation=='ln':
             self.secTotal=math.log(self.floatOrInt())
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
-            self.result=True
+            self.result=False
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
-        elif self.secOperation=='inverse':
-            self.secTotal=1/self.floatOrInt()
-            self.printNumber(self.secTotal)
-            self.result=True
-            self.secOperation=None
+
 
 
 
@@ -204,26 +205,28 @@ class SciCalc():
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
 
     def addition(self,*args):
-        self.opSelect()
+        self.equal()
         self.operation='addition'
+        self.opSelect()
         self.printNumber(self.total)
         self.result=True
     
     def subtraction(self, *args):
-        self.opSelect()
+        
         self.operation='subtraction'
+        self.opSelect()
         self.printNumber(self.total)
         self.result=True
 
     def multiplication(self, *args):
-        self.opSelect()
         self.operation='multiplication'
+        self.opSelect()
         self.printNumber(self.total)
         self.result=True
 
     def division(self, *args):
-        self.opSelect()
         self.operation='division'
+        self.opSelect()
         self.printNumber(self.total)
         self.result=True
     
@@ -435,10 +438,6 @@ class SciCalc():
         self.secOperation='ln'
         self.secOpSelect()
 
-    def inverse(self,*args):
-        self.secOperation='inverse'
-        self.secOpSelect()
-
 
 calc=SciCalc()
 
@@ -464,7 +463,7 @@ functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
-             calc.inverse, '', '', '', '',
+             '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',
                     
 ]

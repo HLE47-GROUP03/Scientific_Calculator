@@ -464,7 +464,7 @@ functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
-             calc.inverse, '', '', '', '',
+             calc., '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',
                     
 ]

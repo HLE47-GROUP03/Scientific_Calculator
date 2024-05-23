@@ -84,21 +84,22 @@ class SciCalc():
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
-                self.result=True
+                self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='nPower':                           # Υπολογισμός Χ στη δύναμη του Υ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή της βάσης, χρήση του αριθμού που δόθηκε σαν βάση
                 self.base=self.floatOrInt()                         # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βάσης
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βάση )
+                self.result=True
             else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
                 self.exponent=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
                 self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
+                self.result=False
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
-            self.result=True
-
+    
         elif self.secOperation=='squared':
             self.base=self.floatOrInt()                             # Αποθήκευση της τιμής οθόνης ως εκθέτη
             self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
@@ -464,7 +465,7 @@ functions_1=['', '', '',
              calc.piKey, calc.napierConstant, '', '', '',
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
-             calc.inverse, '', '', '', '',
+             '', '', '', '', '',
              calc.nRoot, calc.square_root, '', '', '',
                     
 ]
