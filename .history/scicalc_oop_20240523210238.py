@@ -37,11 +37,13 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
-            return float(display.get())                             # επιστρέφει float
-        else:                                                       # αλλιώς
-            return int(display.get())                               # επιστρέφει ακέραιο
-
+        try:
+            if '.' in display.get():                                # Αν υπάρχει η τελεία στον αριθμό
+                return float(display.get())                         # επιστρέφει float
+            else:                                                   # αλλιώς
+                return int(display.get())                           # επιστρέφει ακέραιο
+        except:                                                     # Για την περίπτωση που υπάρχει σύμβολο (πχ %)
+            return display.get()                                    # Επιστρέφει χωρίς να αλλάξει τύπο (δηλ str)
     
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
         if self.operation=='addition':                              # Πρόσθεση
@@ -261,10 +263,10 @@ class SciCalc():
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
 
-    def division(self, *args):                                      # Διαίρεση
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
-        self.operation='division'                                   # Θέτουμε τον επιλογέα κύριας πράξης ως διαίρεση
-        self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
+    def division(self, *args):
+        self.opSelect()
+        self.operation='division'
+        self.printNumber(self.total)
         self.result=True
     
     def percent(self, *args):                                       # Ποσοστό
@@ -275,38 +277,39 @@ class SciCalc():
             self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
         self.result=True
     
-    def roundFunc(self, *args):                                     # Στρογγυλοποίηση
-        self.printNumber(round(float(display.get())))               # Στρογγυλοποίηση και εμφάνιση στην οθόνη του αριθμού που υπήρχε
+    def roundFunc(self, *args):                                     # 
+        self.printNumber(round(float(display.get())))
         self.result=True
 
-    def clear(self,*args):                                          # Καθαρισμός
-        self.printNumber(self.total)                                # Εμφάνιση αποθηκευμένου μερικού συνόλου
-        self.operation=None                                         # Καθαρισμός της τελευταίας πράξης
+    def clear(self,*args):
+        self.printNumber(self.total)
+        self.operation=None
         self.result=True
 
-    def backspace(self,*args):                                      # Διαγραφή τελευταίου χαρακτήρα
+    def backspace(self,*args):
         if display.get()=='0':
             self.result=True
-        elif len(display.get())==1:                                 # Αν το μήκος του αριθμού που εμφανίζεται είναι ένα ψηφίο
-            self.printNumber('0')                                   # Διαγραφή του αριθμού και εμφάνιση του '0'
+        elif len(display.get())==1:
+            self.printNumber('0')
             self.result=True
         else:
-            display.delete(display.index("end") - 1)                # Αλλιώς διαγραφή του τελευταίου ψηφίου του αριθμού
+            display.delete(display.index("end") - 1)
             self.result=False
 
-    def allClear(self):                                             # Καθαρισμός όλων
-        self.printNumber('0')                                       # Εμφάνιση του '0' στην οθόνη
-        self.operation=None                                         #
-        self.total=0                                                #
-        self.result=False                                           #
-        self.haveOperant=False                                      #
-        self.secOperation=None                                      # Επαναφορά όλων τον βοηθητικών μεταβλητών
-        self.memory=0                                               #
-        self.grTotal=0                                              #
-        self.GTsaved=False                                          #
+    def allClear(self):
+        self.printNumber('0')
+        self.operation=None
+        self.total=0
+        self.result=False
+        self.haveOperant=False
+        self.secOperation=None
+        self.memory=0
+        self.grTotal=0
+        self.GTsaved=False
 
-    def squareRoot(self):                                           # Τετραγωνική ρίζα
-        self.printNumber(math.sqrt(float(display.get())))           # Εμφάνιση του αποτελέσματος της math.sqrt()
+    def squareRoot(self):
+        answer = math.sqrt(float(display.get()))
+        self.printNumber(answer)
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
@@ -401,7 +404,9 @@ class SciCalc():
 
     def sign(self, *args):
         if '-' in display.get():
-            self.printNumber(display.get()[1:])
+            number=display.get()
+            number=number[1:]
+            self.printNumber(number)
         else:
             display.insert(0, '-')
         self.result=False

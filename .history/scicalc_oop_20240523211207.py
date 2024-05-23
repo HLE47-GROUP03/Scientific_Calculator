@@ -37,11 +37,13 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
-            return float(display.get())                             # επιστρέφει float
-        else:                                                       # αλλιώς
-            return int(display.get())                               # επιστρέφει ακέραιο
-
+        try:
+            if '.' in display.get():                                # Αν υπάρχει η τελεία στον αριθμό
+                return float(display.get())                         # επιστρέφει float
+            else:                                                   # αλλιώς
+                return int(display.get())                           # επιστρέφει ακέραιο
+        except:                                                     # Για την περίπτωση που υπάρχει σύμβολο (πχ %)
+            return display.get()                                    # Επιστρέφει χωρίς να αλλάξει τύπο (δηλ str)
     
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
         if self.operation=='addition':                              # Πρόσθεση
@@ -401,7 +403,9 @@ class SciCalc():
 
     def sign(self, *args):
         if '-' in display.get():
-            self.printNumber(display.get()[1:])
+            number=display.get()
+            number=number[1:]
+            self.printNumber(number)
         else:
             display.insert(0, '-')
         self.result=False

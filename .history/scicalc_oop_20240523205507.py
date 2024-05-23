@@ -37,11 +37,13 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
-            return float(display.get())                             # επιστρέφει float
-        else:                                                       # αλλιώς
-            return int(display.get())                               # επιστρέφει ακέραιο
-
+        try:
+            if '.' in display.get():                                # Αν υπάρχει η τελεία στον αριθμό
+                return float(display.get())                         # επιστρέφει float
+            else:                                                   # αλλιώς
+                return int(display.get())                           # επιστρέφει ακέραιο
+        except:                                                     # Για την περίπτωση που υπάρχει σύμβολο (πχ %)
+            return display.get()                                    # Επιστρέφει χωρίς να αλλάξει τύπο (δηλ str)
     
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
         if self.operation=='addition':                              # Πρόσθεση
@@ -170,7 +172,7 @@ class SciCalc():
             except:                                                 # Για την περίπτωση που η παράμετρος είναι αρνητικός αριθμός
                 self.secTotal='Math ERROR'
             self.printNumber(self.secTotal)
-            self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
+            self.secOperation=None
 
         elif self.secOperation=='sinh':
             self.angle=self.floatOrInt()
@@ -182,7 +184,7 @@ class SciCalc():
 
         elif self.secOperation=='cosh':
             self.angle=self.floatOrInt()
-            if is_deg:                                              # Αν ο επιλογέας υπολογισμού γωνιών είναι σε μοίρες
+            if is_deg:
                 self.angle=math.radians(self.angle)
             self.secTotal=math.cosh(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
@@ -226,6 +228,7 @@ class SciCalc():
         self.result=True
 
 
+
     def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
         if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
             self.secOpSelect()
@@ -243,70 +246,75 @@ class SciCalc():
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
         self.GTsaved=False
 
-    def addition(self,*args):                                       # Πρόσθεση
+    def addition(self,*args):
         self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
         self.operation='addition'                                   # Θέτουμε τον επιλογέα κύριας πράξης ως πρόσθεση
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
     
-    def subtraction(self, *args):                                   # Αφαίρεση
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
-        self.operation='subtraction'                                # Θέτουμε τον επιλογέα κύριας πράξης ως αφαίρεση
-        self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
+    def subtraction(self, *args):                                   
+        self.opSelect()
+        self.operation='subtraction'
+        self.printNumber(self.total)
         self.result=True
 
-    def multiplication(self, *args):                                # Πολλαπλασιασμός
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
-        self.operation='multiplication'                             # Θέτουμε τον επιλογέα κύριας πράξης ως πολλαπλασιασμό
-        self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
+    def multiplication(self, *args):
+        self.opSelect()
+        self.operation='multiplication'
+        self.printNumber(self.total)
         self.result=True
 
-    def division(self, *args):                                      # Διαίρεση
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
-        self.operation='division'                                   # Θέτουμε τον επιλογέα κύριας πράξης ως διαίρεση
-        self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
+    def division(self, *args):
+        self.opSelect()
+        self.operation='division'
+        self.printNumber(self.total)
         self.result=True
     
-    def percent(self, *args):                                       # Ποσοστό
-        if self.operation:                                          # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
-            self.equal()                                            # Εκτέλεση της πράξης
-            self.printNumber(self.floatOrInt()*100)                 # Εμφάνιση του αποτελέσματος σε ποσοστό επί τοις 100
+    def percent(self, *args):
+        if self.operation:
+            self.equal()
+            number=self.floatOrInt()
+            self.printNumber(number*100)     
         else:
-            self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
+            number=self.floatOrInt()
+            self.printNumber(number/100)
         self.result=True
     
-    def roundFunc(self, *args):                                     # Στρογγυλοποίηση
-        self.printNumber(round(float(display.get())))               # Στρογγυλοποίηση και εμφάνιση στην οθόνη του αριθμού που υπήρχε
+    def roundFunc(self, *args):
+        number=display.get()
+        number=round(float(number))
+        self.printNumber( number)
         self.result=True
 
-    def clear(self,*args):                                          # Καθαρισμός
-        self.printNumber(self.total)                                # Εμφάνιση αποθηκευμένου μερικού συνόλου
-        self.operation=None                                         # Καθαρισμός της τελευταίας πράξης
+    def clear(self,*args):
+        self.printNumber(self.total)
+        self.operation=None
         self.result=True
 
-    def backspace(self,*args):                                      # Διαγραφή τελευταίου χαρακτήρα
+    def backspace(self,*args):
         if display.get()=='0':
             self.result=True
-        elif len(display.get())==1:                                 # Αν το μήκος του αριθμού που εμφανίζεται είναι ένα ψηφίο
-            self.printNumber('0')                                   # Διαγραφή του αριθμού και εμφάνιση του '0'
+        elif len(display.get())==1:
+            self.printNumber('0')
             self.result=True
         else:
-            display.delete(display.index("end") - 1)                # Αλλιώς διαγραφή του τελευταίου ψηφίου του αριθμού
+            display.delete(display.index("end") - 1)
             self.result=False
 
-    def allClear(self):                                             # Καθαρισμός όλων
-        self.printNumber('0')                                       # Εμφάνιση του '0' στην οθόνη
-        self.operation=None                                         #
-        self.total=0                                                #
-        self.result=False                                           #
-        self.haveOperant=False                                      #
-        self.secOperation=None                                      # Επαναφορά όλων τον βοηθητικών μεταβλητών
-        self.memory=0                                               #
-        self.grTotal=0                                              #
-        self.GTsaved=False                                          #
+    def allClear(self):
+        self.printNumber('0')
+        self.operation=None
+        self.total=0
+        self.result=False
+        self.haveOperant=False
+        self.secOperation=None
+        self.memory=0
+        self.grTotal=0
+        self.GTsaved=False
 
-    def squareRoot(self):                                           # Τετραγωνική ρίζα
-        self.printNumber(math.sqrt(float(display.get())))           # Εμφάνιση του αποτελέσματος της math.sqrt()
+    def squareRoot(self):
+        answer = math.sqrt(float(display.get()))
+        self.printNumber(answer)
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
@@ -401,7 +409,9 @@ class SciCalc():
 
     def sign(self, *args):
         if '-' in display.get():
-            self.printNumber(display.get()[1:])
+            number=display.get()
+            number=number[1:]
+            self.printNumber(number)
         else:
             display.insert(0, '-')
         self.result=False
