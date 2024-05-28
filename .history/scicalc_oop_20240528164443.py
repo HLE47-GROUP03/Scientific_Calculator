@@ -33,14 +33,10 @@ class SciCalc():
                 text='Display ERROR'                                # Εμφάνιση σφ΄΄αλματος
         else:                                                       # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
             text=number
-        display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
-        display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
+        self
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if 'ERROR' in display.get():
-            #self.total=0
-            return 0
-        elif '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
+        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο

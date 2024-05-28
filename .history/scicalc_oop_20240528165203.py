@@ -38,7 +38,7 @@ class SciCalc():
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get():
-            #self.total=0
+            self.total=0
             return 0
         elif '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float

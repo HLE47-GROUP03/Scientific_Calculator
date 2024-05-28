@@ -37,19 +37,13 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if 'ERROR' in display.get():
-            #self.total=0
-            return 0
-        elif '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
+        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
 
     
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
-        if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
-            self.secOpSelect()
-
         if self.operation=='addition':                              # Πρόσθεση
             self.total += self.floatOrInt()
 
@@ -65,12 +59,6 @@ class SciCalc():
             else:                                                   # Διαφορετικά εμφάνιση σφάλματος
                 self.total = 'Math ERROR'
 
-        elif self.operation=='mod':                                 # Υπόλοιπο
-            if self.floatOrInt()!=0:                                # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
-                self.total %= self.floatOrInt()
-            else:                                                   # Διαφορετικά εμφάνιση σφάλματος
-                self.total = 'Math ERROR'
-
         elif self.operation==None:
             self.total = self.floatOrInt()
         
@@ -79,7 +67,7 @@ class SciCalc():
         if self.secOperation=='nRoot':                              # # Υπολογισμός n-οστής ρίζας του Χ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
                 self.degree=self.floatOrInt()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
-                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
+                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )                               
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
@@ -239,6 +227,8 @@ class SciCalc():
 
 
     def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
+        if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
+            self.secOpSelect()
         self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
         try:
@@ -410,17 +400,10 @@ class SciCalc():
         self.result=False
 
     def sign(self, *args):
-        number=display.get()
-        if self.result==True or number=='0':                        # Αν στην οθόνη έχουμε αποτέλεσμα ή το 0
-            self.printNumber('-')                                   # Καθαρίζουμε την οθόνη και ξεκινάμε με -
-        elif '-' in display.get():                                  # Αν στην οθόνη έχουμε αρνητικό αριθμό ή το -
-            if number=='-':                                         # Αν στην οθόνη είναι το -
-                number='0'                                          # Θέλουμε να εμφανιστεί το 0
-            else:
-                number=number[1:]                                   # Αν είναι αρνητικός, διαχωρίζουμε τον αριθμό από το πρόσημο
-            self.printNumber(number)                                # Διαγράφουμε οθόνη και γράφουμε 0 ή τον διαχωρισμένο αριθμό
+        if '-' in display.get():
+            self.printNumber(display.get()[1:])
         else:
-            display.insert(0, '-')                                  # Αν είναι θετικός και όχι αποτέλεσμα ή 0, βάζουμε ένα - μπροστά
+            display.insert(0, '-')
         self.result=False
 
     def piKey(self):
@@ -534,11 +517,10 @@ class SciCalc():
             self.result=True
 
     def mod(self, *args):
-        self.opSelect()
         self.operation='mod'
+        self.opSelect()
         self.printNumber(self.total)
         self.result=True
-
 
     def ceil(self, *args):
         self.printNumber(math.ceil(float(display.get())))
@@ -593,8 +575,8 @@ tags_simple=['ceil', 'floor','C' , 'AC', chr(9003),
              '0', '.', '00', chr(177), '='
 ]
 
-functions_2=[   calc.ceil, calc.floor, calc.clear, calc.allClear, calc.backspace,
-                calc.num_7, calc.num_8, calc.num_9, calc.percent, calc.mod,
+functions_2=[   'left parenthesis', 'right parenthesis', calc.clear, calc.allClear, calc.backspace,
+                calc.num_7, calc.num_8, calc.num_9, calc.percent, calc.roundFunc,
                 calc.num_4, calc.num_5, calc.num_6, calc.multiplication, calc.division,
                 calc.num_1, calc.num_2, calc.num_3, calc.addition, calc.subtraction,
                 calc.num_0, calc.decimalPoint, calc.num_00, calc.sign, calc.equal]
@@ -635,24 +617,16 @@ for ro in range(2,7):
 i=0
 for ro in range(8,13):
     for col in range(0,5):
-        if tags_simple[i]=='ceil':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
-            button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
-            Hovertip(button_list[i+28], "Στρογγυλοποίηση προς\nτον μεγαλύτερο ακέραιο", hover_delay=500)
-        elif tags_simple[i]=='floor':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
-            button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
-            Hovertip(button_list[i+28], "Στρογγυλοποίηση προς\n τον μικρότερο ακέραιο", hover_delay=500)           
-        elif tags_simple[i]=='C' or tags_simple[i]=='AC' or tags_simple[i]==chr(9003):
+        if tags_simple[i]=='C' or tags_simple[i]=='AC' or tags_simple[i]==chr(9003):
             button_list.append(tk.Button(frame, width=5, height=2, bg='red', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
         elif tags_simple[i]=='+' or tags_simple[i]=='-' or tags_simple[i]=='÷' or tags_simple[i]=='x' or tags_simple[i]== chr(177) or tags_simple[i]== '%':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
+            button_list.append(tk.Button(frame, width=5, height=2, bg='black', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
-        elif tags_simple[i]=='mod':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
+        elif tags_simple[i]=='ROUND':
+            button_list.append(tk.Button(frame, width=5, height=2, bg='black', fg='white', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
-            Hovertip(button_list[i+28], "Υπόλοιπο ακέραιας\n         διαίρεσης", hover_delay=500)  
+            Hovertip(button_list[i+28], "Στρογγυλοποίηση στον\nκοντινότερο ακέραιο", hover_delay=500)  
         elif tags_simple[i]=='=':
             button_list.append(tk.Button(frame, width=5, height=2, bg='indianred3', fg='black', activebackground='green', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, columnspan=1, pady=5, padx=2, sticky="NSEW")

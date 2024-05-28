@@ -24,7 +24,7 @@ class SciCalc():
         self.memory=0                                               # για τους αριθμούς που αποθηκεύονται στη μνήμη
         self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
         self.GTsaved=False                                          # για την επιλογή αποθήκευσης ή εμφάνισης συνόλου όταν πιέζεται το πλήκτρο GT
-
+R
     def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων 
         if len(str(number))>20:                                     # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
             text=decimal.Decimal(number)                            # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
@@ -37,10 +37,7 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if 'ERROR' in display.get():
-            #self.total=0
-            return 0
-        elif '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
+        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο

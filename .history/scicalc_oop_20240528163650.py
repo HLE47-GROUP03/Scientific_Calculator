@@ -37,10 +37,7 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if 'ERROR' in display.get():
-            #self.total=0
-            return 0
-        elif '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
+        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
@@ -409,18 +406,7 @@ class SciCalc():
             display.insert('end', '.')
         self.result=False
 
-    def sign(self, *args):
-        number=display.get()
-        if self.result==True or number=='0':                        # Αν στην οθόνη έχουμε αποτέλεσμα ή το 0
-            self.printNumber('-')                                   # Καθαρίζουμε την οθόνη και ξεκινάμε με -
-        elif '-' in display.get():                                  # Αν στην οθόνη έχουμε αρνητικό αριθμό ή το -
-            if number=='-':                                         # Αν στην οθόνη είναι το -
-                number='0'                                          # Θέλουμε να εμφανιστεί το 0
-            else:
-                number=number[1:]                                   # Αν είναι αρνητικός, διαχωρίζουμε τον αριθμό από το πρόσημο
-            self.printNumber(number)                                # Διαγράφουμε οθόνη και γράφουμε 0 ή τον διαχωρισμένο αριθμό
-        else:
-            display.insert(0, '-')                                  # Αν είναι θετικός και όχι αποτέλεσμα ή 0, βάζουμε ένα - μπροστά
+    def sign(self, *args):s
         self.result=False
 
     def piKey(self):

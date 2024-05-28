@@ -37,10 +37,7 @@ class SciCalc():
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
     
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if 'ERROR' in display.get():
-            #self.total=0
-            return 0
-        elif '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
+        if '.' in display.get():                                    # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
@@ -49,7 +46,6 @@ class SciCalc():
     def opSelect(self):                                             # για τις ΄βασικές πράξεις ( '+' , '-' , '*' , '/' ) και το '='
         if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
             self.secOpSelect()
-
         if self.operation=='addition':                              # Πρόσθεση
             self.total += self.floatOrInt()
 
@@ -65,11 +61,7 @@ class SciCalc():
             else:                                                   # Διαφορετικά εμφάνιση σφάλματος
                 self.total = 'Math ERROR'
 
-        elif self.operation=='mod':                                 # Υπόλοιπο
-            if self.floatOrInt()!=0:                                # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
-                self.total %= self.floatOrInt()
-            else:                                                   # Διαφορετικά εμφάνιση σφάλματος
-                self.total = 'Math ERROR'
+
 
         elif self.operation==None:
             self.total = self.floatOrInt()
@@ -79,7 +71,7 @@ class SciCalc():
         if self.secOperation=='nRoot':                              # # Υπολογισμός n-οστής ρίζας του Χ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
                 self.degree=self.floatOrInt()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
-                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
+                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )                               
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.floatOrInt()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
@@ -410,17 +402,10 @@ class SciCalc():
         self.result=False
 
     def sign(self, *args):
-        number=display.get()
-        if self.result==True or number=='0':                        # Αν στην οθόνη έχουμε αποτέλεσμα ή το 0
-            self.printNumber('-')                                   # Καθαρίζουμε την οθόνη και ξεκινάμε με -
-        elif '-' in display.get():                                  # Αν στην οθόνη έχουμε αρνητικό αριθμό ή το -
-            if number=='-':                                         # Αν στην οθόνη είναι το -
-                number='0'                                          # Θέλουμε να εμφανιστεί το 0
-            else:
-                number=number[1:]                                   # Αν είναι αρνητικός, διαχωρίζουμε τον αριθμό από το πρόσημο
-            self.printNumber(number)                                # Διαγράφουμε οθόνη και γράφουμε 0 ή τον διαχωρισμένο αριθμό
+        if '-' in display.get():
+            self.printNumber(display.get()[1:])
         else:
-            display.insert(0, '-')                                  # Αν είναι θετικός και όχι αποτέλεσμα ή 0, βάζουμε ένα - μπροστά
+            display.insert(0, '-')
         self.result=False
 
     def piKey(self):
@@ -534,11 +519,10 @@ class SciCalc():
             self.result=True
 
     def mod(self, *args):
-        self.opSelect()
         self.operation='mod'
+        self.opSelect()
         self.printNumber(self.total)
         self.result=True
-
 
     def ceil(self, *args):
         self.printNumber(math.ceil(float(display.get())))
