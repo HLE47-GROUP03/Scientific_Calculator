@@ -25,20 +25,20 @@ class SciCalc():
         self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
         self.GTsaved=False                                          # για την επιλογή αποθήκευσης ή εμφάνισης συνόλου όταν πιέζεται το πλήκτρο GT
 
-    def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων
-        try:
-            if len(str(number))>20:                                 # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
-                text=decimal.Decimal(number)                        # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
-                text=format(text, '.13e')                           # Μετατροπή σε επιστημονική μορφή (Συνολικού πλήθους 20 χαρακτήρων )
-                if len(text) > 20:                                  # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
-                    text='Display ERROR'                            # Εμφάνιση σφ΄΄αλματος
-            else:                                                   # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
-                text=number
-        except ValueError:
-            text='Display ERROR'
+    def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων 
+        if len(str(number))>20:                                     # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
+            if isinstance(number, int):
+                text=int(number)
+                
+            text=decimal.Decimal(number)                            # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
+            text=format(text, '.13e')                               # Μετατροπή σε επιστημονική μορφή (Συνολικού πλήθους 20 χαρακτήρων )
+            if len(text) > 20:                                      # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
+                text='Display ERROR'                                # Εμφάνιση σφ΄΄αλματος
+        else:                                                       # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
+            text=number
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
-        
+    
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get():
             #self.total=0
@@ -111,7 +111,7 @@ class SciCalc():
             self.angle=self.floatOrInt()                            # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.sin() δέχεται παράμετρο σε ακτίνια)
-            self.secTotal=round(math.sin(self.angle),15)            # Στρογγυλοποίηση στα 15 δεκαδικά
+            self.secTotal=math.sin(self.angle)                      
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -119,7 +119,7 @@ class SciCalc():
             self.angle=self.floatOrInt()                            # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.cos() δέχεται παράμετρο σε ακτίνια)
-            self.secTotal=round(math.cos(self.angle),15)            # Στρογγυλοποίηση στα 15 δεκαδικά
+            self.secTotal=math.cos(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         

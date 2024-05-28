@@ -111,7 +111,7 @@ class SciCalc():
             self.angle=self.floatOrInt()                            # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.sin() δέχεται παράμετρο σε ακτίνια)
-            self.secTotal=round(math.sin(self.angle),15)            # Στρογγυλοποίηση στα 15 δεκαδικά
+            self.secTotal=round(math.sin(self.angle),15)                      
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -119,7 +119,7 @@ class SciCalc():
             self.angle=self.floatOrInt()                            # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.cos() δέχεται παράμετρο σε ακτίνια)
-            self.secTotal=round(math.cos(self.angle),15)            # Στρογγυλοποίηση στα 15 δεκαδικά
+            self.secTotal=math.cos(self.angle)
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
