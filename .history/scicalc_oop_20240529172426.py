@@ -286,7 +286,6 @@ class SciCalc():
     def percent(self, *args):                                       # Ποσοστό
         if self.operation!=None:                                    # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
             self.printNumber(self.floatOrInt()/100)                 # Εμφάνιση της οθόνης σε ποσοστό επί τοις 100
-            self.equal()                                            # Εκτέλεση της πράξης
         else:
             self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
         self.result=True

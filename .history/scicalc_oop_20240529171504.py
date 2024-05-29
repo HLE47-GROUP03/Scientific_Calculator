@@ -284,9 +284,9 @@ class SciCalc():
         self.result=True
     
     def percent(self, *args):                                       # Ποσοστό
-        if self.operation!=None:                                    # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
-            self.printNumber(self.floatOrInt()/100)                 # Εμφάνιση της οθόνης σε ποσοστό επί τοις 100
+        if self.operation:                                          # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
             self.equal()                                            # Εκτέλεση της πράξης
+            self.printNumber(self.floatOrInt()*100)                 # Εμφάνιση του αποτελέσματος σε ποσοστό επί τοις 100
         else:
             self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
         self.result=True
@@ -546,7 +546,8 @@ class SciCalc():
         self.result=True
 
 
-    def ceil(self, *args):
+
+     def ceil(self, *args):
         try:
             self.printNumber(math.ceil(float(display.get())))
         except:

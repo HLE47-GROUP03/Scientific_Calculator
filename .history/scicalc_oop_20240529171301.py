@@ -284,9 +284,9 @@ class SciCalc():
         self.result=True
     
     def percent(self, *args):                                       # Ποσοστό
-        if self.operation!=None:                                    # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
-            self.printNumber(self.floatOrInt()/100)                 # Εμφάνιση της οθόνης σε ποσοστό επί τοις 100
+        if self.operation:                                          # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
             self.equal()                                            # Εκτέλεση της πράξης
+            self.printNumber(self.floatOrInt()*100)                 # Εμφάνιση του αποτελέσματος σε ποσοστό επί τοις 100
         else:
             self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
         self.result=True
@@ -399,20 +399,17 @@ class SciCalc():
             pass
         elif display.get()=='-':
             self.printNumber('-0')                                  # Προσθέτω μόνο 1 μηδενικό, αν υπάρχει '-'
-        else:
-            display.insert('end','00')                              # Προσθέτω το '00' στην οθόνη από δεξιά
+        elif display.get()=='0'or display.get()=='-0':
         self.result=False
 
     def decimalPoint(self,*args):
         txt=display.get()
         if self.result==True:
-            self.printNumber('0.')                                  # Αν η οθόνη έχει αποτέλεσμα, εκτυπώνω '0.'
+            self.printNumber('0.')
         elif '.' in txt:
-            pass                                                    # Αν η οθόνη έχει ήδη '.', δεν κάνω τίποτα
-        elif txt=='-':
-            self.printNumber('-0.')                                 # Αν η οθόνη έχει '-', εκτυπώνω '-0.'
+            pass    
         else:
-            display.insert('end', '.')                              # Αλλιώς προσθέτω ένα '-' απο δεξιά
+            display.insert('end', '.')
         self.result=False
 
     def sign(self, *args):
@@ -547,17 +544,11 @@ class SciCalc():
 
 
     def ceil(self, *args):
-        try:
-            self.printNumber(math.ceil(float(display.get())))
-        except:
-            self.printNumber('ERROR')
+        self.printNumber(math.ceil(float(display.get())))
         self.result=True
 
     def floor(self, *args):
-        try:
-            self.printNumber(math.floor(float(display.get())))
-        except:
-            self.printNumber('ERROR')
+        self.printNumber(math.floor(float(display.get())))
         self.result=True
 
     

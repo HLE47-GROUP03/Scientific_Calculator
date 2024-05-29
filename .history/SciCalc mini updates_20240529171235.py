@@ -395,13 +395,14 @@ class SciCalc():
     def num_00(self,*args):
         if self.result==True:
             self.printNumber('0')                                   # Προσθέτω μόνο 1 μηδενικό, αν είναι αποτέλεσμα
-        elif display.get()=='0' or display.get()=='-0':
+        elif display.get()=='0'or display.get()=='-0':
             pass
         elif display.get()=='-':
             self.printNumber('-0')                                  # Προσθέτω μόνο 1 μηδενικό, αν υπάρχει '-'
         else:
             display.insert('end','00')                              # Προσθέτω το '00' στην οθόνη από δεξιά
         self.result=False
+
 
     def decimalPoint(self,*args):
         txt=display.get()
@@ -694,7 +695,6 @@ root.bind('7', calc.num_7)
 root.bind('8', calc.num_8)
 root.bind('9', calc.num_9)
 root.bind('.', calc.decimalPoint)
-root.bind('<KP_Decimal>', calc.decimalPoint)
 root.bind('=', calc.equal)
 root.bind('<Return>', calc.equal)
 root.bind('+', calc.addition)

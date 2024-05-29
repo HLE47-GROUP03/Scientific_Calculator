@@ -403,6 +403,7 @@ class SciCalc():
             display.insert('end','00')                              # Προσθέτω το '00' στην οθόνη από δεξιά
         self.result=False
 
+
     def decimalPoint(self,*args):
         txt=display.get()
         if self.result==True:
@@ -694,7 +695,6 @@ root.bind('7', calc.num_7)
 root.bind('8', calc.num_8)
 root.bind('9', calc.num_9)
 root.bind('.', calc.decimalPoint)
-root.bind('<KP_Decimal>', calc.decimalPoint)
 root.bind('=', calc.equal)
 root.bind('<Return>', calc.equal)
 root.bind('+', calc.addition)

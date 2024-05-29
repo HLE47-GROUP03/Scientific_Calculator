@@ -175,10 +175,7 @@ class SciCalc():
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='inverse':                          # Αντίστροφος
-            try:
-                self.secTotal=1/self.floatOrInt()
-            except ZeroDivisionError:
-                self.secTotal='Math ERROR'
+            self.secTotal=1/self.floatOrInt()
             self.printNumber(self.secTotal)
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -284,11 +281,15 @@ class SciCalc():
         self.result=True
     
     def percent(self, *args):                                       # Ποσοστό
-        if self.operation!=None:                                    # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
-            self.printNumber(self.floatOrInt()/100)                 # Εμφάνιση της οθόνης σε ποσοστό επί τοις 100
+        if self.operation:                                          # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
             self.equal()                                            # Εκτέλεση της πράξης
+            self.printNumber(self.floatOrInt()*100)                 # Εμφάνιση του αποτελέσματος σε ποσοστό επί τοις 100
         else:
             self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
+        self.result=True
+    
+    def roundFunc(self, *args):                                     # Στρογγυλοποίηση
+        self.printNumber(round(float(display.get())))               # Στρογγυλοποίηση και εμφάνιση στην οθόνη του αριθμού που υπήρχε
         self.result=True
 
     def clear(self,*args):                                          # Καθαρισμός
@@ -322,97 +323,93 @@ class SciCalc():
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('1')                                   # Εμφανίζω το 1 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('1')
         else:
-            display.insert('end','1')                               # Αλλιώς προσθέτω το 1 από δεξιά
+            display.insert('end','1')
         self.result=False        
 
     def num_2(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('2')                                   # Εμφανίζω το 2 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('2')
         else:
-            display.insert('end','2')                               # Αλλιώς προσθέτω το 2 από δεξιά
+            display.insert('end','2')
         self.result=False    
 
     def num_3(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('3')                                   # Εμφανίζω το 3 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('3')
         else:
-            display.insert('end','3')                               # Αλλιώς προσθέτω το 3 από δεξιά
+            display.insert('end','3')
         self.result=False    
 
     def num_4(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('4')                                   # Εμφανίζω το 4 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('4')
         else:
-            display.insert('end','4')                               # Αλλιώς προσθέτω το 4 από δεξιά
+            display.insert('end','4')
         self.result=False    
 
     def num_5(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('5')                                   # Εμφανίζω το 5 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('5')
         else:
-            display.insert('end','5')                               # Αλλιώς προσθέτω το 5 από δεξιά
+            display.insert('end','5')
         self.result=False    
 
     def num_6(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('6')                                   # Εμφανίζω το 6 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('6')
         else:
-            display.insert('end','6')                               # Αλλιώς προσθέτω το 6 από δεξιά
+            display.insert('end','6')
         self.result=False    
 
     def num_7(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('7')                                   # Εμφανίζω το 7 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('7')
         else:
-            display.insert('end','7')                               # Αλλιώς προσθέτω το 7 από δεξιά
+            display.insert('end','7')
         self.result=False    
 
     def num_8(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('8')                                   # Εμφανίζω το 8 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('8')
         else:
-            display.insert('end','8')                               # Αλλιώς προσθέτω το 8 από δεξιά
+            display.insert('end','8')
         self.result=False    
 
     def num_9(self,*args):
         if display.get()=='0' or self.result==True:
-            self.printNumber('9')                                   # Εμφανίζω το 9 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
+            self.printNumber('9')
         else:
-            display.insert('end','9')                               # Αλλιώς προσθέτω το 9 από δεξιά
+            display.insert('end','9')
         self.result=False    
 
     def num_0(self,*args):
         if self.result==True:
             self.printNumber('0')
-        elif display.get()=='0' or display.get()=='-0':             # Δεν προσθέτουμε άλλα μηδενικά χωρίς νοήμα, περιμένουμε '.' ή καινούργιο αριθμό
+        elif display.get()=='0':
             pass
         else:
-            display.insert('end','0')                               # Προσθέτω το '0' στην οθόνη από δεξιά
+            display.insert('end','0')
         self.result=False
 
     def num_00(self,*args):
         if self.result==True:
-            self.printNumber('0')                                   # Προσθέτω μόνο 1 μηδενικό, αν είναι αποτέλεσμα
-        elif display.get()=='0' or display.get()=='-0':
+            self.printNumber('00')
+        elif display.get()=='0':
             pass
-        elif display.get()=='-':
-            self.printNumber('-0')                                  # Προσθέτω μόνο 1 μηδενικό, αν υπάρχει '-'
         else:
-            display.insert('end','00')                              # Προσθέτω το '00' στην οθόνη από δεξιά
+            display.insert('end','00')
         self.result=False
 
     def decimalPoint(self,*args):
         txt=display.get()
         if self.result==True:
-            self.printNumber('0.')                                  # Αν η οθόνη έχει αποτέλεσμα, εκτυπώνω '0.'
+            self.printNumber('0.')
         elif '.' in txt:
-            pass                                                    # Αν η οθόνη έχει ήδη '.', δεν κάνω τίποτα
-        elif txt=='-':
-            self.printNumber('-0.')                                 # Αν η οθόνη έχει '-', εκτυπώνω '-0.'
+            pass    
         else:
-            display.insert('end', '.')                              # Αλλιώς προσθέτω ένα '-' απο δεξιά
+            display.insert('end', '.')
         self.result=False
 
     def sign(self, *args):
@@ -547,17 +544,11 @@ class SciCalc():
 
 
     def ceil(self, *args):
-        try:
-            self.printNumber(math.ceil(float(display.get())))
-        except:
-            self.printNumber('ERROR')
+        self.printNumber(math.ceil(float(display.get())))
         self.result=True
 
     def floor(self, *args):
-        try:
-            self.printNumber(math.floor(float(display.get())))
-        except:
-            self.printNumber('ERROR')
+        self.printNumber(math.floor(float(display.get())))
         self.result=True
 
     
@@ -694,7 +685,7 @@ root.bind('7', calc.num_7)
 root.bind('8', calc.num_8)
 root.bind('9', calc.num_9)
 root.bind('.', calc.decimalPoint)
-root.bind('<KP_Decimal>', calc.decimalPoint)
+root.bind(KP_Decimal
 root.bind('=', calc.equal)
 root.bind('<Return>', calc.equal)
 root.bind('+', calc.addition)
