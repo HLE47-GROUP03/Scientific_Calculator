@@ -252,11 +252,12 @@ class SciCalc():
             else:
                 self.printNumber(self.total)
         except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
-            self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
-        self.grTotal+=self.total
+            self.printNumber(self.total)                            # Εμφάνιση αποτελέσματοself.grTotal+=
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
+
+        self.GTsaved=False
 
     def addition(self,*args):                                       # Πρόσθεση
         self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
@@ -314,6 +315,7 @@ class SciCalc():
         self.secOperation=None                                      # Επαναφορά όλων τον βοηθητικών μεταβλητών
         self.memory=0                                               #
         self.grTotal=0                                              #
+        self.GTsaved=False                                          #
 
     def squareRoot(self):                                           # Τετραγωνική ρίζα
         self.printNumber(math.sqrt(float(display.get())))           # Εμφάνιση του αποτελέσματος της math.sqrt()
@@ -529,9 +531,13 @@ class SciCalc():
     def memSet(self, *args):
         self.memory=self.floatOrInt()
 
-    def grandTotal(self, *args):         
-        self.printNumber(self.grTotal)
-        self.result=True
+    def grandTotal(self, *args):
+        if self.GTsaved==False:
+            self.grTotal+=self.floatOrInt()
+            self.GTsaved=True
+        else:            
+            self.printNumber(self.grTotal)
+            self.result=True
 
     def mod(self, *args):
         self.opSelect()

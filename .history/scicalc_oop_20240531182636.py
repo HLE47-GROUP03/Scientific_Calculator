@@ -314,6 +314,7 @@ class SciCalc():
         self.secOperation=None                                      # Επαναφορά όλων τον βοηθητικών μεταβλητών
         self.memory=0                                               #
         self.grTotal=0                                              #
+        self.GTsaved=False                                          #
 
     def squareRoot(self):                                           # Τετραγωνική ρίζα
         self.printNumber(math.sqrt(float(display.get())))           # Εμφάνιση του αποτελέσματος της math.sqrt()
@@ -531,7 +532,7 @@ class SciCalc():
 
     def grandTotal(self, *args):         
         self.printNumber(self.grTotal)
-        self.result=True
+            self.result=True
 
     def mod(self, *args):
         self.opSelect()
