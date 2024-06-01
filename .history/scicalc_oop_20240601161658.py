@@ -37,7 +37,6 @@ class SciCalc():
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
-        self.result=True
         
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get():
@@ -125,10 +124,11 @@ class SciCalc():
         
         elif self.secOperation=='tan':                              # Υπολογισμός εφαπτομένης
             self.angle=self.floatOrInt()                            # Ανάγνωση οθόνης
+            if 
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.tan() δέχεται παράμετρο σε ακτίνια)
             self.secTotal=math.tan(self.angle)
-            self.printNumber(round(self.secTotal,9))                # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcSin':                           # Υπολογισμός αντίστροφου ημίτονου

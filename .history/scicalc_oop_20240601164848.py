@@ -37,7 +37,7 @@ class SciCalc():
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
-        self.result=True
+        self.result=None
         
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get():
