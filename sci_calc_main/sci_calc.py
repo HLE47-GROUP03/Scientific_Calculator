@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 import math
 from idlelib.tooltip import Hovertip
@@ -616,8 +617,12 @@ def switch():
         switch_button.config(image = deg)
         is_deg = True 
 
-rad = tk.PhotoImage(file = "./images/Rad.png")
-deg = tk.PhotoImage(file = "./images/Deg.png")
+# rad = tk.PhotoImage(file = "./images/Rad.png")
+# deg = tk.PhotoImage(file = "./images/Deg.png")
+
+script_dir = os.path.dirname(os.path.realpath(__file__))
+rad = tk.PhotoImage(file=os.path.join(script_dir, "images", "Rad.png"))
+deg = tk.PhotoImage(file=os.path.join(script_dir, "images", "Deg.png"))
 
 switch_button=tk.Button(frame, width=2, height=40, image=deg, cursor="exchange", command=switch)
 switch_button.grid(row=1, column=0, columnspan=2, pady=5, padx=2, sticky="NSEW")
