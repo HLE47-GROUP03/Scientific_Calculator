@@ -23,7 +23,6 @@ class SciCalc():
         self.secOperation=None                                      # επιλογή για δευτερεύουσες πράξεις
         self.memory=0                                               # για τους αριθμούς που αποθηκεύονται στη μνήμη
         self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
-        self.GTsaved=False                                          # για την επιλογή αποθήκευσης ή εμφάνισης συνόλου όταν πιέζεται το πλήκτρο GT
 
     def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων
         try:
@@ -38,6 +37,7 @@ class SciCalc():
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
+        self.result=True
         
     def floatOrInt(self, *args):                                    # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get():
@@ -53,7 +53,9 @@ class SciCalc():
         if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
             self.secOpSelect()
 
-        if self.operation=='addition':                              # Πρόσθεση
+        if 'ERROR' in display.get():                                
+            self.clear()                                            # Αν υπάρχει ERROR κάνει Clear
+        elif self.operation=='addition':                              # Πρόσθεση
             self.total += self.floatOrInt()
 
         elif self.operation=='subtraction':                         # Αφαίρεση
@@ -79,7 +81,9 @@ class SciCalc():
         
 
     def secOpSelect(self):
-        if self.secOperation=='nRoot':                              # # Υπολογισμός n-οστής ρίζας του Χ
+        if 'ERROR' in display.get():                                
+            self.clear()                                            # Αν υπάρχει ERROR κάνει Clear
+        elif self.secOperation=='nRoot':                            # # Υπολογισμός n-οστής ρίζας του Χ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
                 self.degree=self.floatOrInt()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
@@ -128,7 +132,7 @@ class SciCalc():
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.tan() δέχεται παράμετρο σε ακτίνια)
             self.secTotal=math.tan(self.angle)
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.printNumber(round(self.secTotal,9))                # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcSin':                           # Υπολογισμός αντίστροφου ημίτονου
@@ -254,10 +258,11 @@ class SciCalc():
                 self.printNumber(self.total)
         except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
             self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
+        if 'ERROR' not in self.total:                               # Ελέγχω αν υπάρχει ERROR στο total
+            self.grTotal+=self.total
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
-        self.GTsaved=False
 
     def addition(self,*args):                                       # Πρόσθεση
         self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
@@ -283,13 +288,22 @@ class SciCalc():
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
     
-    def percent(self, *args):                                       # Ποσοστό
-        if self.operation!=None:                                    # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
-            self.printNumber(self.floatOrInt()/100)                 # Εμφάνιση της οθόνης σε ποσοστό επί τοις 100
-            self.equal()                                            # Εκτέλεση της πράξης
+    def percent(self, *args):                                                # Ποσοστό
+        if 'ERROR' in display.get():                                
+            self.clear()                                                     # Αν υπάρχει ERROR κάνει Clear      
+        elif self.operation=='addition' or self.operation=='subtraction':    # Αν υπάρχει πρόσθεση ή αφαίρεση σε εκκρεμότητα
+            number=(self.floatOrInt()/100)*self.total                        # Βρίσκω το ποσοστό % του προηγούμενου αριθμού
+            self.printNumber(number)
+            self.equal()                                                     # Το προσθέτω/αφαιρώ από τον προηγούμενο αριθμό 
+            
+        elif self.operation=='multiplication' or self.operation=='division': # Αν υπάρχει πολλαπλασιασμός ή διαίρεση
+            number=(self.floatOrInt()/100)                                   # Μετατροπή του αριθμού στην οθόνη σε %
+            self.printNumber(number)
+            self.equal()                                                     # Πολλαπλασιαμός/Διαίρεση του δεκαδικού πλέον αριθμού με τον προηγούμενο
         else:
-            self.printNumber(self.floatOrInt()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
-        self.result=True
+            self.printNumber(self.floatOrInt()/100)                          # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
+        self.result=True                 
+        
 
     def clear(self,*args):                                          # Καθαρισμός
         self.printNumber(self.total)                                # Εμφάνιση αποθηκευμένου μερικού συνόλου
@@ -297,7 +311,9 @@ class SciCalc():
         self.result=True
 
     def backspace(self,*args):                                      # Διαγραφή τελευταίου χαρακτήρα
-        if display.get()=='0':
+        if 'ERROR' in display.get():                                
+            self.clear()                                            # Αν υπάρχει ERROR κάνει Clear
+        elif display.get()=='0':
             self.result=True
         elif len(display.get())==1:                                 # Αν το μήκος του αριθμού που εμφανίζεται είναι ένα ψηφίο
             self.printNumber('0')                                   # Διαγραφή του αριθμού και εμφάνιση του '0'
@@ -315,10 +331,12 @@ class SciCalc():
         self.secOperation=None                                      # Επαναφορά όλων τον βοηθητικών μεταβλητών
         self.memory=0                                               #
         self.grTotal=0                                              #
-        self.GTsaved=False                                          #
 
     def squareRoot(self):                                           # Τετραγωνική ρίζα
-        self.printNumber(math.sqrt(float(display.get())))           # Εμφάνιση του αποτελέσματος της math.sqrt()
+        if 'ERROR' in display.get():                                
+            self.clear()                                            # Αν υπάρχει ERROR κάνει Clear
+        else:
+            self.printNumber(math.sqrt(float(display.get())))       # Εμφάνιση του αποτελέσματος της math.sqrt()
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
@@ -531,13 +549,9 @@ class SciCalc():
     def memSet(self, *args):
         self.memory=self.floatOrInt()
 
-    def grandTotal(self, *args):
-        if self.GTsaved==False:
-            self.grTotal+=self.floatOrInt()
-            self.GTsaved=True
-        else:            
-            self.printNumber(self.grTotal)
-            self.result=True
+    def grandTotal(self, *args):         
+        self.printNumber(self.grTotal)
+        self.result=True
 
     def mod(self, *args):
         self.opSelect()
@@ -547,19 +561,27 @@ class SciCalc():
 
 
     def ceil(self, *args):
-        try:
-            self.printNumber(math.ceil(float(display.get())))
-        except:
-            self.printNumber('ERROR')
+        if 'ERROR' in display.get():                                
+            self.clear()                                            # Αν υπάρχει ERROR κάνει Clear
+        else:
+            try:
+                self.printNumber(math.ceil(float(display.get())))
+            except:
+                self.printNumber('ERROR')
         self.result=True
 
     def floor(self, *args):
-        try:
-            self.printNumber(math.floor(float(display.get())))
-        except:
-            self.printNumber('ERROR')
+        if 'ERROR' in display.get():                                
+            self.clear()                                            # Αν υπάρχει ERROR κάνει All Clear
+        else:
+            try:
+                self.printNumber(math.floor(float(display.get())))
+            except:
+                self.printNumber('ERROR')
         self.result=True
 
+    def ClickedEntry(self, *args):                                  # Όταν γίνετε αριστερό κλικ η οθόνη, επιστρέφει break για να μην εκτελεστεί
+        return 'break'
     
 
 calc=SciCalc()
@@ -694,6 +716,7 @@ root.bind('7', calc.num_7)
 root.bind('8', calc.num_8)
 root.bind('9', calc.num_9)
 root.bind('.', calc.decimalPoint)
+root.bind('<KP_Decimal>', calc.decimalPoint)
 root.bind('=', calc.equal)
 root.bind('<Return>', calc.equal)
 root.bind('+', calc.addition)
@@ -702,4 +725,5 @@ root.bind('*', calc.multiplication)
 root.bind('/', calc.division)
 root.bind('<BackSpace>', calc.backspace)
 root.bind('<Escape>', calc.clear)
+display.bind('<1>',calc.ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
 root.mainloop()
