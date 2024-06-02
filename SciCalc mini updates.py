@@ -258,8 +258,10 @@ class SciCalc():
                 self.printNumber(self.total)
         except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
             self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
-        if 'ERROR' not in self.total:                               # Ελέγχω αν υπάρχει ERROR στο total
+        try:                                                      
             self.grTotal+=self.total
+        except:
+            self.grTotal=self.total
         self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
         self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
