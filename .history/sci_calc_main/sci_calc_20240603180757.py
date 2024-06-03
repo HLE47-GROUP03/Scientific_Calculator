@@ -124,8 +124,7 @@ class SciCalc():
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
         elif self.secOperation=='tan':                              # Υπολογισμός εφαπτομένης
-            self.angle=self.inputHandler()                          # Ανάγνωση οθόνης
-            right=False
+            self.angle=self.inputHandler()                            # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 if self.angle%180==90:
                     right=True
@@ -133,8 +132,7 @@ class SciCalc():
             self.secTotal=math.tan(self.angle)
             if right:
                 self.printNumber('Math ERROR')
-            else:
-                self.printNumber(round(self.secTotal,15))                # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.printNumber(round(self.secTotal,15))                # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcSin':                           # Υπολογισμός αντίστροφου ημίτονου
@@ -566,7 +564,9 @@ class SciCalc():
         except:
             self.printNumber('ERROR')
         self.result=True
-    
+
+    def ClickedEntry(self, *args):                                  # Όταν γίνετε αριστερό κλικ η οθόνη, επιστρέφει break για να μην εκτελεστεί
+        return 'break'
     
 
 calc=SciCalc()
@@ -626,10 +626,7 @@ def switch():
         is_deg = False
     else:
         switch_button.config(image = deg)
-        is_deg = True
-
-def ClickedEntry(*args):                                  # Όταν γίνεται αριστερό κλικ στην οθόνη, επιστρέφει break για να μην εκτελεστεί
-        return 'break'
+        is_deg = True 
 
 # rad = tk.PhotoImage(file = "./images/Rad.png")
 # deg = tk.PhotoImage(file = "./images/Deg.png")
@@ -696,10 +693,6 @@ for i in range(len(tags_func)):
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
 
-
-
-
-
 # Keybindings
 root.bind('0', calc.num_0)
 root.bind('1', calc.num_1)
@@ -721,5 +714,5 @@ root.bind('*', calc.multiplication)
 root.bind('/', calc.division)
 root.bind('<BackSpace>', calc.backspace)
 root.bind('<Escape>', calc.clear)
-display.bind('<1>',ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
+display.bind('<1>',calc.ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
 root.mainloop()

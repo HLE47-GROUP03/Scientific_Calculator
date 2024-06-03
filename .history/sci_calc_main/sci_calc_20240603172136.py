@@ -42,7 +42,8 @@ class SciCalc():
         
     def inputHandler(self, *args):                                  # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get():
-            return 0
+            #self.total=0
+            self.printNumber()
         elif '.' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
@@ -124,17 +125,11 @@ class SciCalc():
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
         elif self.secOperation=='tan':                              # Υπολογισμός εφαπτομένης
-            self.angle=self.inputHandler()                          # Ανάγνωση οθόνης
-            right=False
+            self.angle=self.inputHandler()                            # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
-                if self.angle%180==90:
-                    right=True
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.tan() δέχεται παράμετρο σε ακτίνια)
             self.secTotal=math.tan(self.angle)
-            if right:
-                self.printNumber('Math ERROR')
-            else:
-                self.printNumber(round(self.secTotal,15))                # Εμφάνιση στην οθόνη του αποτελέσματος
+            self.printNumber(round(self.secTotal,9))                # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcSin':                           # Υπολογισμός αντίστροφου ημίτονου
@@ -290,18 +285,12 @@ class SciCalc():
         self.result=True
     
     def percent(self, *args):                                       # Ποσοστό
-        if self.operation=='addition' or self.operation=='subtraction':    # Αν υπάρχει πρόσθεση ή αφαίρεση σε εκκρεμότητα
-            number=(self.inputHandler()/100)*self.total                        # Βρίσκω το ποσοστό % του προηγούμενου αριθμού
-            self.printNumber(number)
-            self.equal()                                                     # Το προσθέτω/αφαιρώ από τον προηγούμενο αριθμό 
-            
-        elif self.operation=='multiplication' or self.operation=='division': # Αν υπάρχει πολλαπλασιασμός ή διαίρεση
-            number=(self.inputHandler()/100)                                   # Μετατροπή του αριθμού στην οθόνη σε %
-            self.printNumber(number)
-            self.equal()                                                     # Πολλαπλασιαμός/Διαίρεση του δεκαδικού πλέον αριθμού με τον προηγούμενο
+        if self.operation!=None:                                    # Αν υπάρχει προηγούμενη πράξη σε εκκρεμότητα
+            self.printNumber(self.inputHandler()/100)                 # Εμφάνιση της οθόνης σε ποσοστό επί τοις 100
+            self.equal()                                            # Εκτέλεση της πράξης
         else:
-            self.printNumber(self.inputHandler()/100)                          # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
-        self.result=True                 
+            self.printNumber(self.inputHandler()/100)                 # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
+        self.result=True
 
     def clear(self,*args):                                          # Καθαρισμός
         self.printNumber(self.total)                                # Εμφάνιση αποθηκευμένου μερικού συνόλου
@@ -309,9 +298,9 @@ class SciCalc():
         self.result=True
 
     def backspace(self,*args):                                      # Διαγραφή τελευταίου χαρακτήρα
-        if self.inputHandler()=='0':
+        if display.get()=='0':
             self.result=True
-        elif len(str(self.inputHandler()))==1:                      # Αν το μήκος του αριθμού που εμφανίζεται είναι ένα ψηφίο
+        elif len(display.get())==1:                                 # Αν το μήκος του αριθμού που εμφανίζεται είναι ένα ψηφίο
             self.printNumber('0')                                   # Διαγραφή του αριθμού και εμφάνιση του '0'
             self.result=True
         else:
@@ -329,7 +318,7 @@ class SciCalc():
         self.grTotal=0                                              #
 
     def squareRoot(self):                                           # Τετραγωνική ρίζα
-        self.printNumber(math.sqrt(self.inputHandler()))           # Εμφάνιση του αποτελέσματος της math.sqrt()
+        self.printNumber(math.sqrt(float(display.get())))           # Εμφάνιση του αποτελέσματος της math.sqrt()
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
@@ -566,7 +555,9 @@ class SciCalc():
         except:
             self.printNumber('ERROR')
         self.result=True
-    
+
+    def ClickedEntry(self, *args):                                  # Όταν γίνετε αριστερό κλικ η οθόνη, επιστρέφει break για να μην εκτελεστεί
+        return 'break'
     
 
 calc=SciCalc()
@@ -626,10 +617,7 @@ def switch():
         is_deg = False
     else:
         switch_button.config(image = deg)
-        is_deg = True
-
-def ClickedEntry(*args):                                  # Όταν γίνεται αριστερό κλικ στην οθόνη, επιστρέφει break για να μην εκτελεστεί
-        return 'break'
+        is_deg = True 
 
 # rad = tk.PhotoImage(file = "./images/Rad.png")
 # deg = tk.PhotoImage(file = "./images/Deg.png")
@@ -696,10 +684,6 @@ for i in range(len(tags_func)):
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
 
-
-
-
-
 # Keybindings
 root.bind('0', calc.num_0)
 root.bind('1', calc.num_1)
@@ -721,5 +705,5 @@ root.bind('*', calc.multiplication)
 root.bind('/', calc.division)
 root.bind('<BackSpace>', calc.backspace)
 root.bind('<Escape>', calc.clear)
-display.bind('<1>',ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
+display.bind('<1>',calc.ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
 root.mainloop()

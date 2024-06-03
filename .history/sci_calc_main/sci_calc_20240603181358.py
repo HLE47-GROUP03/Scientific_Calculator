@@ -626,10 +626,7 @@ def switch():
         is_deg = False
     else:
         switch_button.config(image = deg)
-        is_deg = True
-
-def ClickedEntry(*args):                                  # Όταν γίνεται αριστερό κλικ στην οθόνη, επιστρέφει break για να μην εκτελεστεί
-        return 'break'
+        is_deg = True 
 
 # rad = tk.PhotoImage(file = "./images/Rad.png")
 # deg = tk.PhotoImage(file = "./images/Deg.png")
@@ -696,10 +693,6 @@ for i in range(len(tags_func)):
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
 
-
-
-
-
 # Keybindings
 root.bind('0', calc.num_0)
 root.bind('1', calc.num_1)
@@ -721,5 +714,5 @@ root.bind('*', calc.multiplication)
 root.bind('/', calc.division)
 root.bind('<BackSpace>', calc.backspace)
 root.bind('<Escape>', calc.clear)
-display.bind('<1>',ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
+display.bind('<1>',calc.ClickedEntry)                   # Κάνω την οθόνη να μην δέχεται αριστερό κλικ
 root.mainloop()

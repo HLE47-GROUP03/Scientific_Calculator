@@ -628,7 +628,7 @@ def switch():
         switch_button.config(image = deg)
         is_deg = True
 
-def ClickedEntry(*args):                                  # Όταν γίνεται αριστερό κλικ στην οθόνη, επιστρέφει break για να μην εκτελεστεί
+def ClickedEntry(*αργσ):                                  # Όταν γίνεται αριστερό κλικ στην οθόνη, επιστρέφει break για να μην εκτελεστεί
         return 'break'
 
 # rad = tk.PhotoImage(file = "./images/Rad.png")
