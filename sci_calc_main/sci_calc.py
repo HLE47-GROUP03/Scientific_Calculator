@@ -7,7 +7,7 @@ import decimal
 
 root=tk.Tk()
 root.title('Scientific Calculator')
-root.geometry('330x690-90+160')                                     # Διαστάσεις / θέση εμφάνισης
+root.geometry('322x690-90+160')                                     # Διαστάσεις / θέση εμφάνισης
 root.resizable(False, False)
 
 frame=tk.Frame(root)
@@ -41,7 +41,7 @@ class SciCalc():
         self.result=True
         
     def inputHandler(self, *args):                                  # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
-        if 'ERROR' in display.get():
+        if 'ERROR' in display.get() or display.get() == '-':
             return 0
         elif '.' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
             return float(display.get())                             # επιστρέφει float
@@ -81,11 +81,15 @@ class SciCalc():
     def secOpSelect(self):
         if self.secOperation=='nRoot':                              # # Υπολογισμός n-οστής ρίζας του Χ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή του βαθμού της ρίζας, χρήση του αριθμού που δόθηκε σαν βαθμός
-                self.degree=self.inputHandler()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
-                self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
+                self.degree=self.inputHandler()                     # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βαθμού ρίζας
+                if self.degree==0:
+                    self.printNumber('Math ERROR')
+                else:    
+                    self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
-                self.radicand=self.inputHandler()                     # Αποθήκευση της τιμής οθόνης ως υπόρριζο
-                self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
+                self.radicand=self.inputHandler()                   # Αποθήκευση της τιμής οθόνης ως υπόρριζο
+                self.secTotal=self.radicand**(1/self.degree)    # Πράξη υπολογισμού της ρίζας
+                self.secTotal='Math ERROR'
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
@@ -442,11 +446,11 @@ class SciCalc():
 
     def piKey(self):
         self.printNumber(math.pi)
-        self.result=True
+        self.result=False
 
     def napierConstant(self):
         self.printNumber(math.e)
-        self.result=True
+        self.result=False
 
     def nRoot(self, *args):
         self.secOperation='nRoot'
@@ -572,7 +576,7 @@ class SciCalc():
 calc=SciCalc()
 
 
-display=tk.Entry(frame,font=('Helvetica',20,'bold'), bg='lightgreen', fg='black', width=20, justify='right', bd=5)
+display=tk.Entry(frame,font=('Helvetica',19,'bold'), bg='lightgreen', fg='black', width=21, justify='right', bd=4, cursor='arrow')
 display.grid(padx=5, pady=5, sticky="NSEW")
 display.grid_configure(columnspan=5)
 display.insert(0, "0")
