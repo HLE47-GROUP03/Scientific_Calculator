@@ -69,7 +69,7 @@ class SciCalc():
                 self.total = 'Math ERROR'
 
         elif self.operation=='mod':                                 # Υπόλοιπο
-            if self.inputHandler()!=0:                                # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
+            if self.inputHandler()!=0:                              # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
                 self.total %= self.inputHandler()
             else:                                                   # Διαφορετικά εμφάνιση σφάλματος
                 self.total = 'Math ERROR'
@@ -85,10 +85,10 @@ class SciCalc():
                 if self.degree==0:
                     self.printNumber('Math ERROR')
                 else:    
-                    self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
+                    self.haveOperant=True                           # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.inputHandler()                   # Αποθήκευση της τιμής οθόνης ως υπόρριζο
-                self.secTotal=self.radicand**(1/self.degree)    # Πράξη υπολογισμού της ρίζας
+                self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
                 self.secTotal='Math ERROR'
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
@@ -96,23 +96,23 @@ class SciCalc():
 
         elif self.secOperation=='nPower':                           # Υπολογισμός Χ στη δύναμη του Υ
             if self.haveOperant==False:                             # Αν δεν έχει αποθηκευτεί η μεταβλητή της βάσης, χρήση του αριθμού που δόθηκε σαν βάση
-                self.base=self.inputHandler()                         # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βάσης
+                self.base=self.inputHandler()                       # Η τιμή της οθόνης αποθηκεύεται στη μεταβλητή βάσης
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βάση )
             else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
-                self.exponent=self.inputHandler()                     # Αποθήκευση της τιμής οθόνης ως εκθέτη
+                self.exponent=self.inputHandler()                   # Αποθήκευση της τιμής οθόνης ως εκθέτη
                 self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='squared':
-            self.base=self.inputHandler()                             # Αποθήκευση της τιμής οθόνης ως εκθέτη
+            self.base=self.inputHandler()                           # Αποθήκευση της τιμής οθόνης ως εκθέτη
             self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
             self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
         elif self.secOperation=='sin':                              # Υπολογισμός ημίτονου
-            self.angle=self.inputHandler()                            # Ανάγνωση οθόνης
+            self.angle=self.inputHandler()                          # Ανάγνωση οθόνης
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.sin() δέχεται παράμετρο σε ακτίνια)
             self.secTotal=round(math.sin(self.angle),15)            # Στρογγυλοποίηση στα 15 δεκαδικά
@@ -138,7 +138,7 @@ class SciCalc():
             if right:
                 self.printNumber('Math ERROR')
             else:
-                self.printNumber(round(self.secTotal,15))                # Εμφάνιση στην οθόνη του αποτελέσματος
+                self.printNumber(round(self.secTotal,15))           # Εμφάνιση στην οθόνη του αποτελέσματος
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='arcSin':                           # Υπολογισμός αντίστροφου ημίτονου
