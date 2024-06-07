@@ -26,6 +26,7 @@ class SciCalc():
         self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
 
     def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων
+ 
         try:
             if len(str(number))>20:                                 # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
                 text=decimal.Decimal(number)                        # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
@@ -33,13 +34,7 @@ class SciCalc():
                 if len(text) > 20:                                  # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
                     text='Display ERROR'                            # Εμφάνιση σφ΄΄αλματος
             else:                                                   # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
-                if '.' in str(number):
-                    if float(number)%1==0:
-                        text=int (number)
-                    else:    
-                        text=float (number)
-                else:
-                    text=int (number)
+                text=number
         except ValueError:
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
@@ -671,11 +666,11 @@ i=0
 for ro in range(8,13):
     for col in range(0,5):
         if tags_simple[i]=='ceil':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3',cursor='top_side', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
+            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
             Hovertip(button_list[i+28], "Στρογγυλοποίηση προς\nτον μεγαλύτερο ακέραιο", hover_delay=500)
         elif tags_simple[i]=='floor':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3',cursor='bottom_side', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
+            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
             Hovertip(button_list[i+28], "Στρογγυλοποίηση προς\n τον μικρότερο ακέραιο", hover_delay=500)           
         elif tags_simple[i]=='C' or tags_simple[i]=='AC' or tags_simple[i]==chr(9003):

@@ -35,9 +35,7 @@ class SciCalc():
             else:                                                   # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
                 if '.' in str(number):
                     if float(number)%1==0:
-                        text=int (number)
-                    else:    
-                        text=float (number)
+                    text=float (number)
                 else:
                     text=int (number)
         except ValueError:
@@ -671,11 +669,11 @@ i=0
 for ro in range(8,13):
     for col in range(0,5):
         if tags_simple[i]=='ceil':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3',cursor='top_side', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
+            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
             Hovertip(button_list[i+28], "Στρογγυλοποίηση προς\nτον μεγαλύτερο ακέραιο", hover_delay=500)
         elif tags_simple[i]=='floor':
-            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3',cursor='bottom_side', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
+            button_list.append(tk.Button(frame, width=5, height=2, bg='darkslategray', fg='lightgoldenrod3', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
             Hovertip(button_list[i+28], "Στρογγυλοποίηση προς\n τον μικρότερο ακέραιο", hover_delay=500)           
         elif tags_simple[i]=='C' or tags_simple[i]=='AC' or tags_simple[i]==chr(9003):
