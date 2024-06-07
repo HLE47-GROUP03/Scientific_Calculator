@@ -44,7 +44,7 @@ class SciCalc():
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
         elif '.' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
-            return decimal.Decimal(display.get())                   # επιστρέφει float
+            return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
 
@@ -89,6 +89,7 @@ class SciCalc():
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.inputHandler()                   # Αποθήκευση της τιμής οθόνης ως υπόρριζο
                 self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
+                self.secTotal='Math ERROR'
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης

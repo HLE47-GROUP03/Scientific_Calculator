@@ -33,7 +33,7 @@ class SciCalc():
                 if len(text) > 20:                                  # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
                     text='Display ERROR'                            # Εμφάνιση σφ΄΄αλματος
             else:                                                   # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
-                text=number
+                text=decimal.Decimal(number)
         except ValueError:
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
@@ -44,7 +44,7 @@ class SciCalc():
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
         elif '.' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
-            return decimal.Decimal(display.get())                   # επιστρέφει float
+            return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
 

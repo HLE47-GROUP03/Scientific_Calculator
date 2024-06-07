@@ -44,7 +44,7 @@ class SciCalc():
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
         elif '.' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
-            return decimal.Decimal(display.get())                   # επιστρέφει float
+            return decimal.Decimal(float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
 
