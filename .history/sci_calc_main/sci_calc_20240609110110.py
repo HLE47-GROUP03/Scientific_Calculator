@@ -27,39 +27,19 @@ class SciCalc():
 
     def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων
         try:
-            text=float(number)                                      # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
-            
-            try:
-                significance = len(str(int(text)))
-            except OverflowError:
-                significance = 0
-            if abs(round(text,1)==round(text,abs(12-significance))):
-                try:
-                    text=round(text)
-                except OverflowError:                                             # Για περιπτώσεις overflow
-                    text='Display ERROR'
-            if '.' in str(text):
-                if text%1==0:
-                    text=int (text)
-                else:
-                        text=float (text)
-            else:
-                text=int (text)
-            print(len(str(text)))
-
-            if len(str(text))>20:                                   # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
-                text=format(text, '.13e')                           # Μετατροπή σε επιστημονική μορφή (Συνολικού πλήθους 20 χαρακτήρων )
-                print(text)
+            if len(str(number))>20:                                 # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
+                text=decimal.Decimal(number)                        # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
+                text=format(text, '.15e')                           # Μετατροπή σε επιστημονική μορφή (Συνολικού πλήθους 20 χαρακτήρων )
                 if len(text) > 20:                                  # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
                     text='Display ERROR'                            # Εμφάνιση σφ΄΄αλματος
             else:                                                   # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
-                if '.' in str(text):
-                    if text%1==0:
-                        text=int (text)
+                if '.' in str(number):
+                    if float(number)%1==0:
+                        text=int (number)
                     else:
-                        text=float (text)
+                        text=float (number)
                 else:
-                    text=int (text)
+                    text=int (number)
         except ValueError:
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
