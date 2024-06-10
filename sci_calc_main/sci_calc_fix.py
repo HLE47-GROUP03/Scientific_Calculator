@@ -647,7 +647,7 @@ functions_2=[   calc.ceil, calc.floor, calc.clear, calc.allClear, calc.backspace
                 calc.num_0, calc.decimalPoint, calc.num_00, calc.sign, calc.equal]
 
 #Κλάση για το κουμπί εναλλαγής μοιρών/ακτινίων.
-def switch():      
+def switch():
     global is_deg
 
     if is_deg:
@@ -665,7 +665,7 @@ def ClickedEntry(*args):                                  # Όταν γίνετ�
 
 
 #Οδηγός για την εύρεση εικόνων μοιρών/ακτινίων.
-script_dir = os.path.dirname(os.path.realpath(__file__))    
+script_dir = os.path.dirname(os.path.realpath(__file__))
 rad = tk.PhotoImage(file=os.path.join(script_dir, "images", "Rad.png"))
 deg = tk.PhotoImage(file=os.path.join(script_dir, "images", "Deg.png"))
 

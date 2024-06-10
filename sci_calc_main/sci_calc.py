@@ -25,41 +25,42 @@ class SciCalc():
         self.memory=0                                               # για τους αριθμούς που αποθηκεύονται στη μνήμη
         self.grTotal=0                                              # για τη λειτουργία αποθήκευσης γενικού συνόλου
 
-    def printNumber(self, number, *args):                           # Συνάρτηση για την εμφάνιση των αποτελεσμάτων
+    def printNumber(self, number, *args):                           # Μέθοδος για την εμφάνιση των αποτελεσμάτων
         try:
             text=float(number)                                      # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
             
             try:
-                significance = len(str(int(text)))
+                significance = len(str(int(text)))                  # Η στρογγυλοποίηση θα γίνει βάσει του πλήθους ψηφίων του ακέραιου μέρους του αριθμού
             except OverflowError:
-                significance = 0
-            if abs(round(text,1)==round(text,abs(12-significance))):
+                significance = 0                                    # Για την περίπτωση πολύ μεγάλων αριθμών
+            if abs(round(text,1)==round(text,abs(12-significance)) and round(text,1)!=0):    # Ελέγχουμε πόσο ακριβής είναι η στρογγυλοποίηση (πχ, ο αριθμός 5.0000000000001)
                 try:
-                    text=round(text)
-                except OverflowError:                                             # Για περιπτώσεις overflow
+                    text=round(text)                                # Στην περίπτωση που ο δεκαδικός είναι πολύ κοντά στον ακέραιο (διαφέρουν μετά το 12ο δεκαδικό για μικρούς αριθμούς), στρογγυλοποιούμε στον κοντινότερο ακέραιο
+                except OverflowError:                               # Για την περίπτωση πολύ μεγάλων αριθμών
                     text='Display ERROR'
-            if '.' in str(text):
-                if text%1==0:
-                    text=int (text)
+            if '.' in str(text):                                    # Έλεγχος για την σωστή εμφάνιση δεκαδικών και ακεραίων
+                if text%1==0:                                       # Αν υπάρχει δεκαδικό σημείο αλλά τα δεκαδικά ψηφία είναι '0'
+                    text=int (text)                                 # Ο αριθμός θα εμφανιστεί σαν ακέραιος
                 else:
-                        text=float (text)
+                    text=float (text)                               # Αλλιώς σαν δεκαδικός
+            elif ('e' in str(text)):                                # Αν ο αριθμός είναι σε επιστημονική μορφή (π.χ. 4ε-06)
+                exp_count = str(text)                               #
+                while exp_count[0]!='e':                            # 
+                    exp_count=exp_count[1:]                         # Επανάληψη για να βρούμε πόσα δεκαδικά ψηφία έχει ο αριθμός (ο εκθέτης του 10 στην επιστημονική μορφή)
+                exp_count=exp_count[1:]                             #
+                exp_count=abs(int(exp_count))                       # 
+                if exp_count < 18:                                  # Αν ο εκθέτης είναι μικρότερος από το 18 (σε απόλυτη τιμή, άρα 18 δεκαδικά ψηφία) 
+                    text= "{:.18f}".format(text)                    # Μετατρέπεται σε δεκαδικό με 18 δεκαδικά
+                    while text[-1]=='0':                            # Επανάληψη για να σβηστούν τα περιττά '0' στο τέλος
+                        text=text[:-1]
             else:
-                text=int (text)
-            print(len(str(text)))
+                text=int (text)                                     # Εφόσον δεν υπάρχει δεκαδικό σημείο, είναι ακέραιος
 
             if len(str(text))>20:                                   # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
                 text=format(text, '.13e')                           # Μετατροπή σε επιστημονική μορφή (Συνολικού πλήθους 20 χαρακτήρων )
-                print(text)
                 if len(text) > 20:                                  # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
                     text='Display ERROR'                            # Εμφάνιση σφ΄΄αλματος
-            else:                                                   # Αλλιώς αν το μήκος του αριθμού είναι μικρότερο απο 20 ψηφία
-                if '.' in str(text):
-                    if text%1==0:
-                        text=int (text)
-                    else:
-                        text=float (text)
-                else:
-                    text=int (text)
+
         except ValueError:
             text='Display ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
@@ -69,7 +70,7 @@ class SciCalc():
     def inputHandler(self, *args):                                  # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
-        elif '.' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
+        elif '.' or 'e' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
             return decimal.Decimal(display.get())                   # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
@@ -279,8 +280,8 @@ class SciCalc():
         self.result=True
 
 
-    def equal(self,*args):                                          # Συνάρτηση που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
-        self.opSelect()                                             # Κλήση της συνάρτησης υπολογισμού βασικών πράξεων
+    def equal(self,*args):                                          # Μέθοδος που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
+        self.opSelect()                                             # Κλήση της μεθόδου υπολογισμού βασικών πράξεων
         display.delete(0, 'end')                                    # Διαγραφή οθόνης
         try:
             if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
@@ -295,41 +296,41 @@ class SciCalc():
         self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
 
     def addition(self,*args):                                       # Πρόσθεση
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
+        self.opSelect()                                             # Κλήση της μεθόδου opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
         self.operation='addition'                                   # Θέτουμε τον επιλογέα κύριας πράξης ως πρόσθεση
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
     
     def subtraction(self, *args):                                   # Αφαίρεση
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
+        self.opSelect()                                             # Κλήση της μεθόδου opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
         self.operation='subtraction'                                # Θέτουμε τον επιλογέα κύριας πράξης ως αφαίρεση
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
 
     def multiplication(self, *args):                                # Πολλαπλασιασμός
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
+        self.opSelect()                                             # Κλήση της μεθόδου opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
         self.operation='multiplication'                             # Θέτουμε τον επιλογέα κύριας πράξης ως πολλαπλασιασμό
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
 
     def division(self, *args):                                      # Διαίρεση
-        self.opSelect()                                             # Κλήση της συνάρτησης opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
+        self.opSelect()                                             # Κλήση της μεθόδου opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
         self.operation='division'                                   # Θέτουμε τον επιλογέα κύριας πράξης ως διαίρεση
         self.printNumber(self.total)                                # Εμφάνιση μερικού συνόλου
         self.result=True
-    
-    def percent(self, *args):                                       # Ποσοστό
-        if self.operation=='addition' or self.operation=='subtraction':    # Αν υπάρχει πρόσθεση ή αφαίρεση σε εκκρεμότητα
-            number=(self.inputHandler()/100)*self.total                        # Βρίσκω το ποσοστό % του προηγούμενου αριθμού
+
+    def percent(self, *args):                                                   # Ποσοστό
+        if self.operation=='addition' or self.operation=='subtraction':         # Αν υπάρχει πρόσθεση ή αφαίρεση σε εκκρεμότητα
+            number=(self.inputHandler()/100)*self.total                         # Βρίσκω το ποσοστό % του προηγούμενου αριθμού
             self.printNumber(number)
-            self.equal()                                                     # Το προσθέτω/αφαιρώ από τον προηγούμενο αριθμό 
+            self.equal()                                                        # Το προσθέτω/αφαιρώ από τον προηγούμενο αριθμό 
             
-        elif self.operation=='multiplication' or self.operation=='division': # Αν υπάρχει πολλαπλασιασμός ή διαίρεση
-            number=(self.inputHandler()/100)                                   # Μετατροπή του αριθμού στην οθόνη σε %
+        elif self.operation=='multiplication' or self.operation=='division':    # Αν υπάρχει πολλαπλασιασμός ή διαίρεση
+            number=(self.inputHandler()/100)                                    # Μετατροπή του αριθμού στην οθόνη σε %
             self.printNumber(number)
-            self.equal()                                                     # Πολλαπλασιαμός/Διαίρεση του δεκαδικού πλέον αριθμού με τον προηγούμενο
+            self.equal()                                                        # Πολλαπλασιασμός/Διαίρεση του δεκαδικού πλέον αριθμού με τον προηγούμενο
         else:
-            self.printNumber(self.inputHandler()/100)                          # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
+            self.printNumber(self.inputHandler()/100)                           # Μετατροπή του αριθμού απο ποσοστό επί τοις 100 σε δεκαδικό
         self.result=True                 
 
     def clear(self,*args):                                          # Καθαρισμός
@@ -358,7 +359,7 @@ class SciCalc():
         self.grTotal=0                                              #
 
     def squareRoot(self):                                           # Τετραγωνική ρίζα
-        self.printNumber(math.sqrt(self.inputHandler()))           # Εμφάνιση του αποτελέσματος της math.sqrt()
+        self.printNumber(math.sqrt(self.inputHandler()))            # Εμφάνιση του αποτελέσματος της math.sqrt()
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
@@ -426,7 +427,7 @@ class SciCalc():
     def num_0(self,*args):
         if self.result==True:
             self.printNumber('0')
-        elif display.get()=='0' or display.get()=='-0':             # Δεν προσθέτουμε άλλα μηδενικά χωρίς νοήμα, περιμένουμε '.' ή καινούργιο αριθμό
+        elif display.get()=='0' or display.get()=='-0':             # Δεν προσθέτουμε άλλα μηδενικά χωρίς νόημα, περιμένουμε '.' ή καινούργιο αριθμό
             pass
         else:
             display.insert('end','0')                               # Προσθέτω το '0' στην οθόνη από δεξιά
@@ -553,25 +554,25 @@ class SciCalc():
         self.secOperation='arcTanh'
         self.secOpSelect()
 
-    def memPlus(self,*args):
+    def memPlus(self,*args):                                        # Πρόσθεση του αριθμού της οθόνης στον αποθηκευμένο στη μν΄΄ήμη αριθμό
         self.memory+=self.inputHandler()
         self.result=True
 
-    def memMinus(self, *args):
+    def memMinus(self, *args):                                      # Αφαίρεση του αριθμού της οθόνης απο τον αποθηκευμένο αριθμό
         self.memory-=self.inputHandler()
         self.result=True
 
-    def memRecall(self, *args):
+    def memRecall(self, *args):                                     # Ο αριθμός που είναι αποθηκευμένος στη μνήμη εμφανίζεται στην οθόνη
         self.printNumber(self.memory)
         self.result=False
 
-    def memClear(self, *args):
+    def memClear(self, *args):                                      # Εκκαθάριση μνήμης
         self.memory=0
 
-    def memSet(self, *args):
+    def memSet(self, *args):                                        # Αποθήκευση του αριθμού που εμφανίζεται στην οθόνη στη μνήμη
         self.memory=self.inputHandler()
 
-    def grandTotal(self, *args):         
+    def grandTotal(self, *args):                                    # Λειτουργία γενικού συνόλου (άθροισμα όλων των αποτελεσμάτων)
         self.printNumber(self.grTotal)
         self.result=True
 
@@ -600,7 +601,7 @@ class SciCalc():
 
 calc=SciCalc()
 
-
+# Δημιουργία όθονης(display) της εφαρμογής.
 display=tk.Entry(frame,font=('Helvetica',19,'bold'), bg='lightgreen', fg='black', width=21, justify='right', bd=4, cursor='arrow')
 display.grid(padx=5, pady=5, sticky="NSEW")
 display.grid_configure(columnspan=5)
@@ -608,24 +609,23 @@ display.insert(0, "0")
 
 
 
-
+# Λίστα με τα σύμβολα/ ονόματα για τα πλήκτρα σύνθετων πράξεων.
 tags_func=[ 'M-', 'MS', 'GT',
             'π','e','M+'       ,'MR'       ,'MC' ,
             'x^y', 'x^2' ,'sin'      ,'cos'      ,'tan',
             'log','ln' ,'arc\nsin' ,'arc\ncos' ,'arc\ntan',
             '1/x','n!' ,'sinh'     ,'cosh'     ,'tanh',    
-            'n√x','2√x','arc\nsinh','arc\ncosh','arc\ntanh',
-    
-            ]
+            'n√x','2√x','arc\nsinh','arc\ncosh','arc\ntanh']
 
+# Λίστα αντιστοίχισης συναρτήσεων για σύνθετες πράξεις.
 functions_1=[calc.memMinus, calc.memSet, calc.grandTotal,
              calc.piKey, calc.napierConstant, calc.memPlus, calc.memRecall, calc.memClear,
              calc.nPower, calc.squared, calc.sin, calc.cos, calc.tan,
              calc.log, calc.ln, calc.arcSin, calc.arcCos, calc.arcTan,
              calc.inverse, calc.factorial, calc.sinh, calc.cosh, calc.tanh,
-             calc.nRoot, calc.squareRoot, calc.arcSinh, calc.arcCosh, calc.arcTanh     
-]
+             calc.nRoot, calc.squareRoot, calc.arcSinh, calc.arcCosh, calc.arcTanh]
 
+# Λίστα με τα μην΄υματα πληροφοριών για κάθε πλήκτρο κατά το mouse-over.
 hover_message=['Αφαίρεση αριθμού από την μνήμη','Προσθήκη αριθμού στην μνήμη','Άθροισμα αποτελεσμάτων','Ο αριθμός π', 'Η σταθερά του Νέιπιερ\n(αριθμός Όιλερ)', 'Πρόσθεσε τον αριθμό στην μνήμη', 'Ανάκτηση αριθμού από την μνήμη', 'Καθαρισμός μνήμης',
                'Ύψωση σε δύναμη', 'Ύψωση στο τετράγωνο','Ημίτονο', 'Συνημίτονο', 'Εφαπτομένη',
                'Δεκαδικός Λογάριθμος', 'Φυσικός λογάριθμος', 'Αντίστροφο ημίτονο', 'Αντίστροφο συνημίτονο', 'Αντίστροφη εφαπτομένη',
@@ -633,20 +633,21 @@ hover_message=['Αφαίρεση αριθμού από την μνήμη','Πρ�
                'n-οστή ρίζα του x', 'Τετραγωνική ρίζα του x', 'Αντίστροφο υπερβολικό\n              ημίτονο',
                'Αντίστροφο υπερβολικό\n          συνημίτονο', 'Αντίστροφη υπερβολική\n           εφαπτομένη']
 
-
+# Λίστα με τα σύμβολα/ ονόματα για τα πλήκτρα απλών πράξεων και λειτουργίες καθαρισμο΄υ οθόνης.
 tags_simple=['ceil', 'floor','C' , 'AC', chr(9003),
              '7', '8', '9', '%' , 'mod',
              '4', '5', '6', 'x', '÷',
              '1', '2', '3', '+', '-',
-             '0', '.', '00', chr(177), '='
-]
+             '0', '.', '00', chr(177), '=']
 
+# Λίστα αντιστοίχισης συναρτήσεων για απλές πράξεις.
 functions_2=[   calc.ceil, calc.floor, calc.clear, calc.allClear, calc.backspace,
                 calc.num_7, calc.num_8, calc.num_9, calc.percent, calc.mod,
                 calc.num_4, calc.num_5, calc.num_6, calc.multiplication, calc.division,
                 calc.num_1, calc.num_2, calc.num_3, calc.addition, calc.subtraction,
                 calc.num_0, calc.decimalPoint, calc.num_00, calc.sign, calc.equal]
 
+#Μέθοδος για τον επιλογέα εναλλαγής υπολογισμού μοιρών/ακτινίων.
 def switch():
     global is_deg
 
@@ -663,13 +664,17 @@ def ClickedEntry(*args):                                  # Όταν γίνετ�
 # rad = tk.PhotoImage(file = "./images/Rad.png")
 # deg = tk.PhotoImage(file = "./images/Deg.png")
 
+
+# Path για τα αρχεία εικόνας του επιλογέα μοιρών/ακτινίων.
 script_dir = os.path.dirname(os.path.realpath(__file__))
 rad = tk.PhotoImage(file=os.path.join(script_dir, "images", "Rad.png"))
 deg = tk.PhotoImage(file=os.path.join(script_dir, "images", "Deg.png"))
 
+# Δημιουργία πλήκτρου- επιλογέα εναλλαγής μοιρών ακτινίων.
 switch_button=tk.Button(frame, width=2, height=40, image=deg, cursor="exchange", command=switch)
 switch_button.grid(row=1, column=0, columnspan=2, pady=5, padx=2, sticky="NSEW")
 
+# Δομές επανάληψης για την δημιουργία πλήκτρων σύνθετων πράξεων.
 i=0
 button_list=[]
 for col in range(2,5):
@@ -687,6 +692,7 @@ for ro in range(2,7):
             button_list[i].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
         i+=1
 
+# Δομή επανάληψης για την δημιουργία πλήκτρων απλών πράξεων και αριθμών, όπου κάθε συνθήκη δίνει διαφορετικά χαρακτηριστικά σε κάθε κουμπί.
 i=0
 for ro in range(8,13):
     for col in range(0,5):
@@ -717,16 +723,15 @@ for ro in range(8,13):
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
         i+=1
 
+# Μήνυμα πληροφορίας για το πλήκτρο εναλλαγής μοιρών/ακτινίων.
 Hovertip(switch_button, "Κλίκ για εναλλαγή υπολογισμού\n            μοιρών/ ακτινίων", hover_delay=100)
 
+# Δομή επανάληψης για αντιστοίχιση πλήκτρων και μηνυμάτων πληροφορίας.
 for i in range(len(tags_func)):
     Hovertip(button_list[i], hover_message[i], hover_delay=500)
 
 for child in frame.winfo_children():
     child.grid_configure(sticky='NSEW')
-
-
-
 
 
 # Keybindings
