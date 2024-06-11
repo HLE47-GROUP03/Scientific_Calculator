@@ -7,7 +7,7 @@ import decimal
 
 root=tk.Tk()
 root.title('Scientific Calculator')
-root.geometry('322x690-90+160')                                     # Διαστάσεις / θέση εμφάνισης
+root.geometry('322x690-250+90')                                     # Διαστάσεις / θέση εμφάνισης
 root.resizable(False, False)
 
 frame=tk.Frame(root)
@@ -46,12 +46,12 @@ class SciCalc():
                     text=float (text)                               # Αλλιώς σαν δεκαδικός
             elif ('e' in str(text)):                                # Αν ο αριθμός είναι σε επιστημονική μορφή (π.χ. 4ε-06)
                 exp_count = str(text)                               #
-                while exp_count[0]!='e':                            # 
+                while exp_count[0]!='e':                            #
                     exp_count=exp_count[1:]                         # Επανάληψη για να βρούμε πόσα δεκαδικά ψηφία έχει ο αριθμός (ο εκθέτης του 10 στην επιστημονική μορφή)
                 exp_count=exp_count[1:]                             #
-                exp_count=abs(int(exp_count))                       # 
-                if exp_count < 18:                                  # Αν ο εκθέτης είναι μικρότερος από το 18 (σε απόλυτη τιμή, άρα 18 δεκαδικά ψηφία) 
-                    text= "{:.18f}".format(text)                    # Μετατρέπεται σε δεκαδικό με 18 δεκαδικά
+                exp_count=abs(int(exp_count))                       #
+                if exp_count < 17:                                  # Αν ο εκθέτης είναι μικρότερος από το 17 (σε απόλυτη τιμή, άρα 18 δεκαδικά ψηφία) και επομένως μπορεί να εμφανιστεί στην οθόνη
+                    text= "{:.17f}".format(text)                    # Μετατρέπεται σε δεκαδικό με 17 δεκαδικά
                     while text[-1]=='0':                            # Επανάληψη για να σβηστούν τα περιττά '0' στο τέλος
                         text=text[:-1]
             else:
@@ -77,7 +77,7 @@ class SciCalc():
     def inputHandler(self, *args):                                  # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
-        elif '.' or 'e' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
+        elif '.' or 'e' in display.get():                           # Αν υπάρχει η τελεία στον αριθμό
             return decimal.Decimal(display.get())                   # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
@@ -97,7 +97,7 @@ class SciCalc():
             self.total *= self.inputHandler()
 
         elif self.operation=='division':                            # Διαίρεση
-            if self.inputHandler()!=0:                                # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
+            if self.inputHandler()!=0:                              # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
                 self.total /= self.inputHandler()
             else:                                                   # Διαφορετικά εμφάνιση σφάλματος
                 self.total = 'Math ERROR'
@@ -655,7 +655,7 @@ functions_2=[   calc.ceil, calc.floor, calc.clear, calc.allClear, calc.backspace
                 calc.num_1, calc.num_2, calc.num_3, calc.addition, calc.subtraction,
                 calc.num_0, calc.decimalPoint, calc.num_00, calc.sign, calc.equal]
 
-#Μέθοδος για τον επιλογέα εναλλαγής υπολογισμού μοιρών/ακτινίων.
+# Μέθοδος για τον επιλογέα εναλλαγής υπολογισμού μοιρών/ακτινίων.
 def switch():
     global is_deg
 
@@ -667,7 +667,7 @@ def switch():
         is_deg = True
 
 def ClickedEntry(*args):                                  # Όταν γίνεται αριστερό κλικ στην οθόνη, επιστρέφει break για να μην εκτελεστεί
-        return 'break'
+    return 'break'
 
 # rad = tk.PhotoImage(file = "./images/Rad.png")
 # deg = tk.PhotoImage(file = "./images/Deg.png")
@@ -725,7 +725,6 @@ for ro in range(8,13):
         elif tags_simple[i]=='=':
             button_list.append(tk.Button(frame, width=5, height=2, bg='indianred3', fg='black', activebackground='green', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, columnspan=1, pady=5, padx=2, sticky="NSEW")
-            break
         else:
             button_list.append(tk.Button(frame, width=5, height=2, bg='lightblue', activebackground='seagreen1', fg='black', font=('Helvetica', 12, 'bold'), bd=2, text=tags_simple[i],command=functions_2[i]))
             button_list[i+28].grid(row=ro, column=col, pady=5, padx=2, sticky="NSEW")
@@ -738,8 +737,8 @@ Hovertip(switch_button, "Κλίκ για εναλλαγή υπολογισμού
 for i in range(len(tags_func)):
     Hovertip(button_list[i], hover_message[i], hover_delay=500)
 
-for child in frame.winfo_children():
-    child.grid_configure(sticky='NSEW')
+# for child in frame.winfo_children():
+#    child.grid_configure(sticky='NSEW')
 
 
 # Keybindings
