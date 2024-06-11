@@ -34,9 +34,9 @@ class SciCalc():
                     significance=11
             except OverflowError:
                 significance = 0                                    # Για την περίπτωση πολύ μεγάλων αριθμών
-            if abs(round(text,4)==round(text,abs(12-significance))) and round(text,4)!=0:    # Ελέγχουμε πόσο ακριβής είναι η στρογγυλοποίηση (πχ, ο αριθμός 5.0000000000001)
+            if abs(round(text,4)==round(text,12-significance)) and round(text,4)!=0:    # Ελέγχουμε πόσο ακριβής είναι η στρογγυλοποίηση (πχ, ο αριθμός 5.0000000000001)
                 try:
-                    text=round(text,abs(11-significance))           # Στην περίπτωση που ο δεκαδικός είναι πολύ κοντά στον ακέραιο (διαφέρουν μετά το 12ο δεκαδικό για μικρούς αριθμούς), στρογγυλοποιούμε στον κοντινότερο ακέραιο
+                    text=round(text,11-significance)                # Στην περίπτωση που ο δεκαδικός είναι πολύ κοντά στον ακέραιο (διαφέρουν μετά το 12ο δεκαδικό για μικρούς αριθμούς), στρογγυλοποιούμε στον κοντινότερο ακέραιο
                 except OverflowError:                               # Για την περίπτωση πολύ μεγάλων αριθμών
                     text='Overflow ERROR'
             if '.' in str(text):                                    # Έλεγχος για την σωστή εμφάνιση δεκαδικών και ακεραίων
@@ -56,7 +56,7 @@ class SciCalc():
                         text=text[:-1]
             else:
                 try:
-                    text=int (text)                                     # Εφόσον δεν υπάρχει δεκαδικό σημείο, είναι ακέραιος
+                    text=int (text)                                 # Εφόσον δεν υπάρχει δεκαδικό σημείο, είναι ακέραιος
                 except OverflowError:
                     text='Overflow ERROR'
 
@@ -67,7 +67,7 @@ class SciCalc():
 
         except ValueError:
             if ('ERROR' not in str(number)) and ('-' not in str(number)):
-                text='Display ERROR_2'
+                text='Display ERROR'
             else:
                 text=str(number)    
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
