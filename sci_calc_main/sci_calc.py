@@ -28,7 +28,6 @@ class SciCalc():
     def printNumber(self, number, *args):                           # Μέθοδος για την εμφάνιση των αποτελεσμάτων
         try:
             text=float(number)                                      # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
-            
             try:
                 significance = len(str(int(text)))                  # Η στρογγυλοποίηση θα γίνει βάσει του πλήθους ψηφίων του ακέραιου μέρους του αριθμού
             except OverflowError:
@@ -62,7 +61,10 @@ class SciCalc():
                     text='Display ERROR'                            # Εμφάνιση σφ΄΄αλματος
 
         except ValueError:
-            text='Display ERROR'
+            if 'ERROR' not in str(number):
+                text='Display ERROR'
+            else:
+                text=str(number)    
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
         self.result=True
@@ -157,9 +159,9 @@ class SciCalc():
             self.angle=self.inputHandler()                          # Ανάγνωση οθόνης
             right=False
             if is_deg:                                              # Αν ο επιλογέας είναι σε υπολογισμό σε μοίρες
-                if self.angle%180==90:
-                    right=True
                 self.angle=math.radians(self.angle)                 # Μετατροπή της γωνίας σε ακτίνια (η math.tan() δέχεται παράμετρο σε ακτίνια)
+            if float (self.angle)%math.pi==1.5707963267948966:
+                right=True                                          # Έλεγχος αν η γωνία είναι 90 + (n * 180) μοίρες (δεν ορίζεται η εφαπτομένη 90 μοιρών)
             self.secTotal=math.tan(self.angle)
             if right:
                 self.printNumber('Math ERROR')
