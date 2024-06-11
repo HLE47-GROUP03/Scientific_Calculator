@@ -77,7 +77,7 @@ class SciCalc():
     def inputHandler(self, *args):                                  # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
-        elif '.' or 'e' in display.get():                                  # Αν υπάρχει η τελεία στον αριθμό
+        elif '.' or 'e' in display.get():                           # Αν υπάρχει η τελεία στον αριθμό
             return decimal.Decimal(display.get())                   # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
@@ -97,7 +97,7 @@ class SciCalc():
             self.total *= self.inputHandler()
 
         elif self.operation=='division':                            # Διαίρεση
-            if self.inputHandler()!=0:                                # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
+            if self.inputHandler()!=0:                              # Έλεγχος αν ο διαιρέτης είναι διάφορος του '0' και εκτέλεση της διαίρεσης
                 self.total /= self.inputHandler()
             else:                                                   # Διαφορετικά εμφάνιση σφάλματος
                 self.total = 'Math ERROR'
