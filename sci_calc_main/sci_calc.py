@@ -77,8 +77,8 @@ class SciCalc():
     def inputHandler(self, *args):                                  # έλεγχος αν ο αριθμός που εμφανίζεται στην οθόνη είναι δεκαδικός ή ακέραιος
         if 'ERROR' in display.get() or display.get() == '-':
             return 0
-        elif '.' or 'e' in display.get():                           # Αν υπάρχει η τελεία στον αριθμό
-            return decimal.Decimal(display.get())                   # επιστρέφει float
+        elif ('.' in display.get()) or ('e' in display.get()):      # Αν υπάρχει η τελεία στον αριθμό
+            return float(display.get())                             # επιστρέφει float
         else:                                                       # αλλιώς
             return int(display.get())                               # επιστρέφει ακέραιο
 
@@ -109,7 +109,10 @@ class SciCalc():
                 self.total = 'Math ERROR'
 
         elif self.operation==None:
-            self.total = self.inputHandler()
+            if 'ERROR' in str(self.total):
+                pass
+            else:
+                self.total = self.inputHandler()
         
 
     def secOpSelect(self):
@@ -122,8 +125,11 @@ class SciCalc():
                     self.haveOperant=True                           # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βαθμός-τάξη της ρίζας )
             else:                                                   # Αν υπάρχει ήδη βαθμός, χρήση του αριθμού ως υπόρριζο
                 self.radicand=self.inputHandler()                   # Αποθήκευση της τιμής οθόνης ως υπόρριζο
-                self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
-                self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
+                if self.radicand > 0:
+                    self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
+                    self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
+                else:
+                    self.total = 'Math ERROR'
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -366,7 +372,10 @@ class SciCalc():
         self.grTotal=0                                              #
 
     def squareRoot(self):                                           # Τετραγωνική ρίζα
-        self.printNumber(math.sqrt(self.inputHandler()))            # Εμφάνιση του αποτελέσματος της math.sqrt()
+        try:
+            self.printNumber(math.sqrt(self.inputHandler()))            # Εμφάνιση του αποτελέσματος της math.sqrt()
+        except ValueError:
+            self.printNumber('Math ERROR')
 
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
