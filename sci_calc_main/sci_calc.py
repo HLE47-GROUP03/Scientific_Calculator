@@ -87,7 +87,10 @@ class SciCalc():
         if self.secOperation:                                       # Αν υπάρχει δευτερεύουσα πράξη σε εξέλιξη (πχ ν-οστή ρίζα) εκτέλεση αυτής
             self.secOpSelect()
 
-        if self.operation=='addition':                              # Πρόσθεση
+        if 'ERROR' in str(self.total):
+            pass    
+
+        elif self.operation=='addition':                              # Πρόσθεση
             self.total += self.inputHandler()
 
         elif self.operation=='subtraction':                         # Αφαίρεση
@@ -109,10 +112,7 @@ class SciCalc():
                 self.total = 'Math ERROR'
 
         elif self.operation==None:
-            if 'ERROR' in str(self.total):
-                pass
-            else:
-                self.total = self.inputHandler()
+            self.total = self.inputHandler()
         
 
     def secOpSelect(self):
