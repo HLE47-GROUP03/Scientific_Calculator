@@ -390,63 +390,63 @@ class SciCalc():
     def num_1(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('1')                                   # Εμφανίζω το 1 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','1')                               # Αλλιώς προσθέτω το 1 από δεξιά
         self.result=False        
 
     def num_2(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('2')                                   # Εμφανίζω το 2 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','2')                               # Αλλιώς προσθέτω το 2 από δεξιά
         self.result=False    
 
     def num_3(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('3')                                   # Εμφανίζω το 3 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','3')                               # Αλλιώς προσθέτω το 3 από δεξιά
         self.result=False    
 
     def num_4(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('4')                                   # Εμφανίζω το 4 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','4')                               # Αλλιώς προσθέτω το 4 από δεξιά
         self.result=False    
 
     def num_5(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('5')                                   # Εμφανίζω το 5 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','5')                               # Αλλιώς προσθέτω το 5 από δεξιά
         self.result=False    
 
     def num_6(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('6')                                   # Εμφανίζω το 6 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','6')                               # Αλλιώς προσθέτω το 6 από δεξιά
         self.result=False    
 
     def num_7(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('7')                                   # Εμφανίζω το 7 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','7')                               # Αλλιώς προσθέτω το 7 από δεξιά
         self.result=False    
 
     def num_8(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('8')                                   # Εμφανίζω το 8 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','8')                               # Αλλιώς προσθέτω το 8 από δεξιά
         self.result=False    
 
     def num_9(self,*args):
         if display.get()=='0' or self.result==True:
             self.printNumber('9')                                   # Εμφανίζω το 9 στην οθόνη αν πριν υπήρχε αποτέλεσμα ή '0'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','9')                               # Αλλιώς προσθέτω το 9 από δεξιά
         self.result=False    
 
@@ -455,7 +455,7 @@ class SciCalc():
             self.printNumber('0')
         elif display.get()=='0' or display.get()=='-0':             # Δεν προσθέτουμε άλλα μηδενικά χωρίς νόημα, περιμένουμε '.' ή καινούργιο αριθμό
             pass
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','0')                               # Προσθέτω το '0' στην οθόνη από δεξιά
         self.result=False
 
@@ -466,7 +466,7 @@ class SciCalc():
             pass
         elif display.get()=='-':
             self.printNumber('-0')                                  # Προσθέτω μόνο 1 μηδενικό, αν υπάρχει '-'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end','00')                              # Προσθέτω το '00' στην οθόνη από δεξιά
         self.result=False
 
@@ -479,7 +479,7 @@ class SciCalc():
             pass                                                    # Αν η οθόνη έχει ήδη '.', δεν κάνω τίποτα
         elif txt=='-':
             self.printNumber('-0.')                                 # Αν η οθόνη έχει '-', εκτυπώνω '-0.'
-        else:
+        elif len(display.get()) < 20:
             display.insert('end', '.')                              # Αλλιώς προσθέτω ένα '-' απο δεξιά
         self.result=False
 
