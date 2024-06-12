@@ -27,7 +27,7 @@ class SciCalc():
 
     def printNumber(self, number, *args):                           # Μέθοδος για την εμφάνιση των αποτελεσμάτων
         try:
-            text=float(number)                                      # Μετατροπή σε δεκαδικό για την περίπτωση που είναι ΄ήδη σε επιστημονική μορφή
+            text=float(number)                                      # Μετατροπή σε δεκαδικό
             try:
                 significance = len(str(int(text)))                  # Η στρογγυλοποίηση θα γίνει βάσει του πλήθους ψηφίων του ακέραιου μέρους του αριθμού
                 if significance>11:
@@ -36,9 +36,9 @@ class SciCalc():
                 significance = 0                                    # Για την περίπτωση πολύ μεγάλων αριθμών
             if abs(round(text,4)==round(text,12-significance)) and round(text,4)!=0:    # Ελέγχουμε πόσο ακριβής είναι η στρογγυλοποίηση (πχ, ο αριθμός 5.0000000000001)
                 try:
-                    text=round(text,11-significance)                # Στην περίπτωση που ο δεκαδικός είναι πολύ κοντά στον ακέραιο (διαφέρουν μετά το 12ο δεκαδικό για μικρούς αριθμούς), στρογγυλοποιούμε στον κοντινότερο ακέραιο
+                    text=round(text,11-significance)                # Στην περίπτωση που ο δεκαδικός είναι πολύ κοντά στον ακέραιο (διαφέρουν μετά το 12ο δεκαδικό για μικρούς αριθμούς), στρογγυλοποιούμε στον κοντινότερο ακέραιο 
                 except OverflowError:                               # Για την περίπτωση πολύ μεγάλων αριθμών
-                    text='Overflow ERROR'
+                    text='Overflow ERROR'       
             if '.' in str(text):                                    # Έλεγχος για την σωστή εμφάνιση δεκαδικών και ακεραίων
                 if text%1==0:                                       # Αν υπάρχει δεκαδικό σημείο αλλά τα δεκαδικά ψηφία είναι '0'
                     text=int (text)                                 # Ο αριθμός θα εμφανιστεί σαν ακέραιος          
@@ -59,7 +59,6 @@ class SciCalc():
                     text=int (text)                                 # Εφόσον δεν υπάρχει δεκαδικό σημείο, είναι ακέραιος
                 except OverflowError:
                     text='Overflow ERROR'
-
             if len(str(text))>20:                                   # Αν το μήκος του αριθμού είναι μεγαλύτερο απο 20 ψηφία
                 text=format(text, '.13e')                           # Μετατροπή σε επιστημονική μορφή (Συνολικού πλήθους 20 χαρακτήρων )
                 if len(text) > 20:                                  # Αν η επιστημονική μορφή είναι μεγαλύτερη απο 20 χαρακτήρες
@@ -69,7 +68,9 @@ class SciCalc():
             if ('ERROR' not in str(number)) and ('-' not in str(number)):
                 text='Display ERROR'
             else:
-                text=str(number)    
+                text=str(number)
+        except OverflowError:
+            text='Overflow ERROR'
         display.delete(0, 'end')                                    # Διαγραφή ΄΄ο,τι εμφανίζεται ήδη στην οθόνη
         display.insert(0,text)                                      # Εμφάνιση του αποτελέσματος
         self.result=True
@@ -129,7 +130,7 @@ class SciCalc():
                     self.secTotal=self.radicand**(1/self.degree)        # Πράξη υπολογισμού της ρίζας
                     self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 else:
-                    self.total = 'Math ERROR'
+                    self.printNumber('Math ERROR')
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
@@ -139,15 +140,21 @@ class SciCalc():
                 self.haveOperant=True                               # Η μεταβλητή του πρώτης παραμέτρου γίνεται αληθής (πρώτη παράμετρος σε αυτή την περίπτωση είναι ο βάση )
             else:                                                   # Αν υπάρχει ήδη βάση, χρήση του αριθμού ως εκθέτη
                 self.exponent=self.inputHandler()                   # Αποθήκευση της τιμής οθόνης ως εκθέτη
-                self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
+                try:
+                    self.secTotal=self.base**self.exponent              # Πράξη υπολογισμού της δύναμης
+                except OverflowError:
+                    self.secTotal=('Overflow ERROR')    
                 self.printNumber(self.secTotal)                     # Εμφάνιση στην οθόνη του αποτελέσματος
                 self.haveOperant=False                              # Εφόσον έγινε η πράξη, η μεταβλητή ύπαρξης πρώτου τελεστέου γίνεται πάλι ψευδής
                 self.secOperation=None                              # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
 
         elif self.secOperation=='squared':
             self.base=self.inputHandler()                           # Αποθήκευση της τιμής οθόνης ως εκθέτη
-            self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
-            self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            try:
+                self.secTotal=self.base**2                              # Πράξη υπολογισμού της δύναμης
+                self.printNumber(self.secTotal)                         # Εμφάνιση στην οθόνη του αποτελέσματος
+            except OverflowError:
+                self.printNumber('Overflow ERROR' )   
             self.secOperation=None                                  # Μηδενισμός της μεταβλητής επιλογής δευτερεύουσας πράξης
         
         elif self.secOperation=='sin':                              # Υπολογισμός ημίτονου
@@ -295,18 +302,21 @@ class SciCalc():
 
     def equal(self,*args):                                          # Μέθοδος που καλείται όταν πατηθεί το κουμπί '=' ή το πλήκτρο Enter
         self.opSelect()                                             # Κλήση της μεθόδου υπολογισμού βασικών πράξεων
-        display.delete(0, 'end')                                    # Διαγραφή οθόνης
-        try:
-            if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
-                self.printNumber(int(self.total))                   
-            else:
-                self.printNumber(self.total)
-        except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
-            self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
-        self.grTotal+=self.inputHandler()
-        self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
-        self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
-        self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
+        if 'ERROR' in display.get():
+            pass
+        else:
+            display.delete(0, 'end')                                    # Διαγραφή οθόνης
+            try:
+                if (self.total%1)==0:                                   # Έλεγχος αν το αποτέλεσμα είναι ακέραιος ή δεκαδικός, για τη σωστή εμφάνιση του αριθμού
+                    self.printNumber(int(self.total))                   
+                else:
+                    self.printNumber(self.total)
+            except:                                                     # Εξαίρεση σφάλματος για την περίπτωση που η μεταβλητή self.total περιέχει χαρακτήρες (πχ κατά τη διαίρεση με το 0)
+                self.printNumber(self.total)                            # Εμφάνιση αποτελέσματος
+            self.grTotal+=self.inputHandler()
+            self.result=True                                            # Θέτουμε ότι αυτό που εμφανίζεται είναι αποτέλεσμα και όχι εισαγωγή απο το πληκτρολόγιο, ώστε κατά την επόμενη πληκτρολόγηση να διαγραφεί απο την οθόνη
+            self.operation=None                                         # Θέτουμε τον επιλογέα τέλεσης βασικών πράξεων ως κενή μεταβλητή
+            self.total=0                                                # Μηδενισμός βοηθητικής μεταβλητής
 
     def addition(self,*args):                                       # Πρόσθεση
         self.opSelect()                                             # Κλήση της μεθόδου opSelect() ώστε να εκτελεστεί η προηγούμενη πράξη (αν υπάρχει)
